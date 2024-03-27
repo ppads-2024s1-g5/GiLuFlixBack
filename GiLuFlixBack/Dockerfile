@@ -19,5 +19,5 @@ COPY --from=build-env /App/out .
 
 
 WORKDIR /App
-ENTRYPOINT ["dotnet","GiLuFlixBack.dll"]
+ENTRYPOINT [dotnet","GiLuFlixBack.dll"]
 EXPOSE 8080

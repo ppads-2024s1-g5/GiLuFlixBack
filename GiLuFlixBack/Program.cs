@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using GiLuFlixBack.Data;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+var connectionString = configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<Context>(options => options.UseMySql(connectionString,ServerVersion.Parse("8.0.36-mysql")));
 
 var app = builder.Build();
 
