@@ -5,10 +5,10 @@ WORKDIR /App
 
 # Copy everything
 COPY . ./
+
 # Restore as distinct layers
 COPY *.csproj ./
 RUN dotnet restore
-
 # Build and publish a release
 RUN dotnet publish -c Release -o out
 
@@ -19,5 +19,6 @@ COPY --from=build-env /App/out .
 
 
 WORKDIR /App
-ENTRYPOINT [dotnet","GiLuFlixBack.dll"]
+
+ENTRYPOINT ["dotnet","GiLuFlixBack.dll"]
 EXPOSE 8080
