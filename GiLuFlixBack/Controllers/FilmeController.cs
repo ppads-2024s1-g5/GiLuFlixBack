@@ -24,23 +24,30 @@ public class FilmeController : Controller
         return View(await _context.filme.ToListAsync());
     }
 
-//    // GET ITEM
-//    [HttpGet("{id}"),ActionName("Details")]
-//    public async Task<ActionResult<Filme>> GetTodoItem(string id)
-//    {
-//        var filme = await _context.filme.FindAsync(id);
-//
-//        if (filme == null)
-//        {
-//            return NotFound();
-//        }
-//
-//        return filme;
-//    }
+    // GET ITEM
+    public async Task<ActionResult<Filme>> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+        var filme = await _context.filme.FirstOrDefaultAsync(m => m.Id == id);
+        if (filme == null)
+        {
+            return NotFound();
+        }
+        return View(filme);
+    }
 
-    // POST
-    
-    public async Task<IActionResult> Create([Bind("Id, Titulo, Diretor, ElencoPrincipal, Pais, Ano")] Filme filme)
+    // GET Filme/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    //o bind (vinculo), serve para se proteger de ataques de overposting. 
+    // bind é um processo de mapeamento automático entre os campos do formulário e atributos do modelo
+    public async Task<IActionResult> Create(Filme filme)
     {
         if (ModelState.IsValid)
         {
@@ -48,11 +55,14 @@ public class FilmeController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        return View(filme);
+        else
+        {
+            return View(filme);
+        }
     }
 
     // DELETE
-    public async Task<IActionResult> Delete(string? id)
+    public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
         {
@@ -80,7 +90,7 @@ public class FilmeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    private bool FilmeExists(string id)
+    private bool FilmeExists(int id)
     {
         return _context.filme.Any(e => e.Id == id);
     }

@@ -9,7 +9,8 @@ public class Filme
 {
     [Column("id")]
     [Key]
-    public string Id {get;set;}
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id {get;set;}
 
     [Display(Name = "Titulo")]
     [Column("titulo")]
