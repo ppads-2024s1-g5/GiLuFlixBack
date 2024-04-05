@@ -9,7 +9,7 @@ on: [push]
 #passo a passo para ser executado
 jobs:
   #nome do job
-  continuous-integration:
+  app-build:
     runs-on: ubuntu-latest
     #passos que devem acontecer nesse job
     
@@ -31,4 +31,14 @@ jobs:
         run: docker-compose build
 
       - name: Push Docker Images
-        run: docker-compose push 
+        run: docker-compose push
+
+  # deploy:
+  #   needs: app-build
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: Pull image from Docker hub 
+  #       run: docker-compose pull 
+
+  #     - name: Run Docker 
+  #       run: docker-compose build; docker-compose up
