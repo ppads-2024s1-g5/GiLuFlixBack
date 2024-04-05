@@ -3,7 +3,7 @@ version: "3"
 services:
 
   database:
-    image: Lucas10sh/databse
+    image: lucas10sh/databse
     build: "./Database"
     #image: my-mysql
     ports:
@@ -15,7 +15,7 @@ services:
       MYSQL_DATABASE: catalog1
   app:
     #banco de dados precisa iniciar para o app rodar
-    image: Lucas10sh/webapp
+    image: lucas10sh/webapp
     build: "./GiLuFlixBack"
     depends_on:
       - database
