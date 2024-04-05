@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Clone our code into the virtual machine
       # Essa action faz um gitclone e faz checkout p uma branch especifica
-        uses: action/checkout@v3
+        uses: actions/checkout@v3
       
       - name: Login no Docker Hub
         uses: docker/login-action@v3
