@@ -17,27 +17,18 @@ jobs:
       - name: Clone our code into the virtual machine
       # Essa action faz um gitclone e faz checkout p uma branch especifica
         uses: actions/checkout@v3
-      
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            
       - name: Login no Docker Hub
-        uses: docker/login-action@v3
-        #with serve para passar parametros a uma action
-        with: 
-          #deve ser passado no formato ${{ secrets.DOCKERHUB_USERNAME }} 
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build Docker
+        run: docker-compose build
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: Lucas10sh/giluflixapp
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true         
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-
+      - name: Push Docker Images
+        run: docker-compose push 
