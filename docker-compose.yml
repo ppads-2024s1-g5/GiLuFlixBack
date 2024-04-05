@@ -3,7 +3,7 @@ version: "3"
 services:
 
   database:
-    image: lucas10sh/databse
+    image: lucas10sh/database
     build: "./Database"
     #image: my-mysql
     ports:

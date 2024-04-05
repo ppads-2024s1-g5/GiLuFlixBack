@@ -33,12 +33,12 @@ jobs:
       - name: Push Docker Images
         run: docker-compose push
 
-  # deploy:
-  #   needs: app-build
-  #   runs-on: self-hosted
-  #   steps:
-  #     - name: Pull image from Docker hub 
-  #       run: docker-compose pull 
+  deploy:
+    needs: app-build
+    runs-on: self-hosted
+    steps:
+      - name: Pull image from Docker hub 
+        run: docker-compose pull 
 
-  #     - name: Run Docker 
-  #       run: docker-compose build; docker-compose up
+      - name: Run Docker 
+        run: docker-compose build; docker-compose up -d
