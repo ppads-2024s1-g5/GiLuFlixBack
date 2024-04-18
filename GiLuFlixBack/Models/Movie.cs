@@ -5,7 +5,7 @@ using System.Globalization;
 namespace GiLuFlixBack.Models;
 
 [Table("Filme")]
-public class Filme
+public class Movie
 {
     [Column("id")]
     [Key]
@@ -32,10 +32,10 @@ public class Filme
     [Column("ano")]
     public int? ano { get; set; }
 
-    public Filme(string titulo_, string diretor_){
+    public Movie(string titulo_, string diretor_){
       titulo = titulo_;
       diretor = diretor_;
     }
 
-    public Filme(){}
+    public Movie(){}
 }

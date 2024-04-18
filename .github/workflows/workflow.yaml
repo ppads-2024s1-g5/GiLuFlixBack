@@ -36,7 +36,9 @@ jobs:
   deploy:
     needs: app-build
     runs-on: self-hosted
+
     steps:
+
       - name: Pull image from Docker hub 
         run: docker-compose pull 
 

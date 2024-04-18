@@ -1,4 +1,4 @@
-CREATE TABLE catalog1.Filme (
+CREATE TABLE catalog1.Movie (
   id int
   ,titulo varchar(30)
   ,diretor varchar(30)
@@ -7,7 +7,7 @@ CREATE TABLE catalog1.Filme (
   ,ano int
 );
 
-INSERT INTO catalog1.Filme
+INSERT INTO catalog1.Movie
 VALUES (1, "Goodfellas", "Martin Scorsese", "...", "USA", 1990),
 (2, "O Poderoso Chefão", "Francis Ford Coppola", "...", "USA", 1972),
 (3, "12 Homens e Uma Sentença", "Sidney Lumet", "...", "USA", 1957),
@@ -17,5 +17,21 @@ VALUES (1, "Goodfellas", "Martin Scorsese", "...", "USA", 1990),
 (7, "Toy Story", "John Lasseter", "...", "USA", 1995),
 (8, "Parasita", "Bong Joon-ho", "...", "Coreia do Sul", 2019),
 (9, "Cidade de Deus", "Fernando Meirelles", "...", "Brasil", 2002),
-(10, "O Silêncio dos Inocentes", "Jonathan Demme", "...", "USA", 1991);
+(10, "O Silencio dos Inocentes", "Jonathan Demme", "...", "USA", 1991);
 
+CREATE TABLE catalog1.User(
+  id int
+  ,uname VARCHAR
+  ,age int
+  ,email int
+  ,upassword int
+  ,urole VARCHAR
+  ,rememberMe BOOLEAN
+  ,returnUrl VARCHAR
+);
+
+
+INSERT INTO catalog1.User
+VALUES
+(100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","",NULL,NULL),
+(101, "Lucas G", 21, "admin", "admin","",NULL,NULL);

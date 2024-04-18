@@ -1,4 +1,4 @@
-@model GiLuFlixBack.Models.Filme
+@model GiLuFlixBack.Models.Movie
 
 @{
     ViewData["Title"] = "Create";
@@ -12,6 +12,10 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+            </div>
             <div class="form-group">
                 <label asp-for="titulo" class="control-label"></label>
                 <input asp-for="titulo" class="form-control" />
@@ -49,5 +53,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

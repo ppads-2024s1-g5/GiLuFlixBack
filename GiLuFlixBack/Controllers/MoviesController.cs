@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GiLuFlixBack.Data;
 using GiLuFlixBack.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GiLuFlixBack.Controllers
 {
+
+    //Notation to verify user auth
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly Context _context;
@@ -22,7 +26,7 @@ namespace GiLuFlixBack.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.filme.ToListAsync());
+            return View(await _context.movie.ToListAsync());
         }
 
         // GET: Movies/Details/5
@@ -33,7 +37,7 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var filme = await _context.filme
+            var filme = await _context.movie
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (filme == null)
             {
@@ -54,15 +58,16 @@ namespace GiLuFlixBack.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,titulo,diretor,elencoPrincipal,pais,ano")] Filme filme)
+        public async Task<IActionResult> Create([Bind("Id,titulo,diretor,elencoPrincipal,pais,ano")] Movie movie)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(filme);
+                _context.Add(movie);
                 await _context.SaveChangesAsync();
+                //return CreatedAtAction(nameof(Filme), new { id = filme.Id }, filme); 
                 return RedirectToAction(nameof(Index));
             }
-            return View(filme);
+            return View(movie);
         }
 
         // GET: Movies/Edit/5
@@ -73,7 +78,7 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var filme = await _context.filme.FindAsync(id);
+            var filme = await _context.movie.FindAsync(id);
             if (filme == null)
             {
                 return NotFound();
@@ -86,9 +91,9 @@ namespace GiLuFlixBack.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,titulo,diretor,elencoPrincipal,pais,ano")] Filme filme)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,titulo,diretor,elencoPrincipal,pais,ano")] Movie movie)
         {
-            if (id != filme.Id)
+            if (id != movie.Id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace GiLuFlixBack.Controllers
             {
                 try
                 {
-                    _context.Update(filme);
+                    _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FilmeExists(filme.Id))
+                    if (!FilmeExists(movie.Id))
                     {
                         return NotFound();
                     }
@@ -113,7 +118,7 @@ namespace GiLuFlixBack.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(filme);
+            return View(movie);
         }
 
         // GET: Movies/Delete/5
@@ -124,7 +129,7 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var filme = await _context.filme
+            var filme = await _context.movie
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (filme == null)
             {
@@ -139,10 +144,10 @@ namespace GiLuFlixBack.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var filme = await _context.filme.FindAsync(id);
-            if (filme != null)
+            var movie = await _context.movie.FindAsync(id);
+            if (movie != null)
             {
-                _context.filme.Remove(filme);
+                _context.movie.Remove(movie);
             }
 
             await _context.SaveChangesAsync();
@@ -151,7 +156,7 @@ namespace GiLuFlixBack.Controllers
 
         private bool FilmeExists(int id)
         {
-            return _context.filme.Any(e => e.Id == id);
+            return _context.movie.Any(e => e.Id == id);
         }
     }
 }
