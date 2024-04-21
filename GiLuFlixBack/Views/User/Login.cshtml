@@ -1,3 +1,6 @@
+@model GiLuFlixBack.Models.User
+
+
 @{
     ViewData["Title"] = "Login";
 }
@@ -11,16 +14,16 @@
     <div class="alert alert-danger">Usuário ou senha incorretos!</div>
 }
 
-<form method="post">
+<form asp-action="Login">
     <!-- Email input -->
     <div data-mdb-input-init class="form-outline mb-4">
-        <input type="text" id="form1Example1" name="Username" class="form-control" />
+        <input type="text" id="form1Example1" name="email" class="form-control" />
         <label class="form-label" for="form1Example1">Username</label>
     </div>
 
     <!-- Password input -->
     <div data-mdb-input-init class="form-outline mb-4">
-        <input type="password" id="form1Example2" name="Password" class="form-control" />
+        <input type="password" id="form1Example2" name="password" class="form-control" />
         <label class="form-label" for="form1Example2">Password</label>
     </div>
 
@@ -29,7 +32,7 @@
         <div class="col d-flex justify-content-center">
             <!-- Checkbox -->
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="form1Example3" name="RememberMe" checked />
+                <input class="form-check-input" type="checkbox" value="true" id="form1Example3" name="RememberMe" checked />
                 <label class="form-check-label" for="form1Example3"> Lembrar de mim </label>
             </div>
         </div>

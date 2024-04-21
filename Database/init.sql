@@ -21,11 +21,11 @@ VALUES (1, "Goodfellas", "Martin Scorsese", "...", "USA", 1990),
 
 CREATE TABLE catalog1.User(
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY
-  ,uname VARCHAR(255)
+  ,name VARCHAR(255)
   ,age int
-  ,email int UNIQUE
-  ,upassword int
-  ,urole VARCHAR(255)
+  ,email VARCHAR(255) UNIQUE
+  ,password VARCHAR(255)
+  ,userRole VARCHAR(255)
   ,rememberMe BOOLEAN
   ,returnUrl VARCHAR(255)
 );
@@ -33,5 +33,5 @@ CREATE TABLE catalog1.User(
 
 INSERT INTO catalog1.User
 VALUES
-(100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","",NULL,NULL),
-(101, "Lucas G", 21, "admin", "admin","",NULL,NULL);
+(100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,"-"),
+(101, "Lucas G", 21, "admin", "admin","user",false,"-");

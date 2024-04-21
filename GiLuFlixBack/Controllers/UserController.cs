@@ -1,25 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GiLuFlixBack.Data;
-using GiLuFlixBack.Models;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using System.Security.Claims;
+using GiLuFlixBack.Repository;
+using GiLuFlixBack.Models;
+using GiLuFlixBack.Data;
+using System.Linq;
+using System;
+
 
 
 namespace GiLuFlixBack.Controllers;
 public class UserController : Controller
 {
     private readonly Context _context;
-    public UserController(Context context)
+    private readonly IUserRepository _userRepository;
+
+    public UserController(Context context, IUserRepository userRepository)
     {
         _context = context;
+        _userRepository = userRepository;
     }
+
     [HttpGet]
     public IActionResult Login()
     {
@@ -27,28 +33,46 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(
-        [FromForm] User user)
+    public async Task<IActionResult> Login([FromForm] User user)
     {
-        // simulando uma validação
-        // if (user.email != "admin" ||
-        //     user.GetPassword() != "admin")
-        // {
-        //     ViewBag.Fail = true;
-        //     return View();
-        // }
 
-        // simulando um usuario no sistema
-        var user_v = new
+        string userInfo = $"INFORMAÇÃO RECEBIDA DO FORMULARIO:\n" +
+                      $"Email: {user.email}\n" +
+                      $"Senha: {user.password}\n" +
+                      $"Lembrar de mim: {user.RememberMe}\n";
+
+        Console.WriteLine(userInfo);
+
+        // Validate presence of email and password
+        if (string.IsNullOrEmpty(user.email) || string.IsNullOrEmpty(user.password))
         {
-            Id = Guid.NewGuid(),
-            Name = "Administrador"
-        };
+            ViewBag.Fail = "Email e/ou senha obrigatórios!";
+            return View(); // Return login view with error message
+        }
+
+        User userFromDb = await _userRepository.SearchByEmail(user.email);
+        
+        if (userFromDb.email == null)
+        {
+            return ViewBag("Usuário não encontrado!");
+        }   
+
+        if (userFromDb.isPasswordCorrect(user.password) == false)
+        {
+            return ViewBag("Senha incorreta!");
+        }        
+        
+        // autorizando o usuario
+        var userVar = new
+         {
+             Id = userFromDb.Id,
+             Name = userFromDb.name
+         };
 
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user_v.Name)
+            new Claim(ClaimTypes.NameIdentifier, userFromDb.Id.ToString()),
+            new Claim(ClaimTypes.Name, userFromDb.name)
         ];
         var authScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
@@ -59,12 +83,12 @@ public class UserController : Controller
         await HttpContext.SignInAsync(authScheme, principal,
             new AuthenticationProperties
             {
-                IsPersistent = user.RememberMe
+                IsPersistent = userFromDb.RememberMe
             });
 
-        if (!String.IsNullOrWhiteSpace(user.ReturnUrl))
+        if (!String.IsNullOrWhiteSpace(userFromDb.ReturnUrl))
         {
-            return Redirect(user.ReturnUrl);
+            return Redirect(userFromDb.ReturnUrl);
         }
 
         return RedirectToAction("Index","Movies");

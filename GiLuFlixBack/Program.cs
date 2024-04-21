@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using GiLuFlixBack.Data;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using GiLuFlixBack.Repository;
+using GiLuFlixBack.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -10,6 +11,9 @@ var connectionString = configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register IUserRepository with its concrete implementation
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Adding auth to api
 builder.Services
