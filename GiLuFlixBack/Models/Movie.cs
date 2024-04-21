@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace GiLuFlixBack.Models;
 
-[Table("Filme")]
+[Table("Movie")]
 public class Movie
 {
     [Column("id")]

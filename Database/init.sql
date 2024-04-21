@@ -1,5 +1,5 @@
 CREATE TABLE catalog1.Movie (
-  id int
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
   ,titulo varchar(30)
   ,diretor varchar(30)
   ,elenco_principal varchar(30)
@@ -20,14 +20,14 @@ VALUES (1, "Goodfellas", "Martin Scorsese", "...", "USA", 1990),
 (10, "O Silencio dos Inocentes", "Jonathan Demme", "...", "USA", 1991);
 
 CREATE TABLE catalog1.User(
-  id int
-  ,uname VARCHAR
+  id int NOT NULL AUTO_INCREMENT PRIMARY KEY
+  ,uname VARCHAR(255)
   ,age int
-  ,email int
+  ,email int UNIQUE
   ,upassword int
-  ,urole VARCHAR
+  ,urole VARCHAR(255)
   ,rememberMe BOOLEAN
-  ,returnUrl VARCHAR
+  ,returnUrl VARCHAR(255)
 );
 
 

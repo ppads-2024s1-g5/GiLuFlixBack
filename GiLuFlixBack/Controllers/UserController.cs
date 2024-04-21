@@ -31,12 +31,12 @@ public class UserController : Controller
         [FromForm] User user)
     {
         // simulando uma validação
-        if (user.email != "admin" ||
-            user.GetPassword() != "admin")
-        {
-            ViewBag.Fail = true;
-            return View();
-        }
+        // if (user.email != "admin" ||
+        //     user.GetPassword() != "admin")
+        // {
+        //     ViewBag.Fail = true;
+        //     return View();
+        // }
 
         // simulando um usuario no sistema
         var user_v = new
@@ -67,7 +67,7 @@ public class UserController : Controller
             return Redirect(user.ReturnUrl);
         }
 
-        return RedirectToRoute("Restrito.Index");
+        return RedirectToAction("Index","Movies");
     }
 
     public async Task<IActionResult> Logout()

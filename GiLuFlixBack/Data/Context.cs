@@ -10,7 +10,7 @@ public class Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Movie>().Property(p => p.Id).UseIdentityColumn();
+        modelBuilder.Entity<Movie>().Property(p => p.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<User>().Property(p => p.Id).UseIdentityColumn(); 
     }
 
