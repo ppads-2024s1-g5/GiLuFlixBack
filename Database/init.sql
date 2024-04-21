@@ -20,9 +20,9 @@ VALUES (1, "Goodfellas", "Martin Scorsese", "...", "USA", 1990),
 (10, "O Silencio dos Inocentes", "Jonathan Demme", "...", "USA", 1991);
 
 CREATE TABLE catalog1.User(
-  id int NOT NULL AUTO_INCREMENT PRIMARY KEY
+   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
   ,name VARCHAR(255)
-  ,age int
+  ,age INT
   ,email VARCHAR(255) UNIQUE
   ,password VARCHAR(255)
   ,userRole VARCHAR(255)
@@ -35,3 +35,17 @@ INSERT INTO catalog1.User
 VALUES
 (100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,"-"),
 (101, "Lucas G", 21, "admin", "admin","user",false,"-");
+
+
+CREATE TABLE catalog1.AVALIACAO_FILME_USUARIO (
+  idAvaliacao INT NOT NULL
+  ,idUser INT NOT NULL
+  ,idMovie INT NOT NULL
+  ,notaFilme INT NOT NULL
+  ,dataHoraAvaliacao TIMESTAMP
+  ,PRIMARY KEY (idAvaliacao)
+  ,CONSTRAINT FK_UserID FOREIGN KEY (idUser)
+    REFERENCES User(id)
+  ,CONSTRAINT FK_MovieID FOREIGN KEY (idMovie)
+    REFERENCES Movie(id)
+);

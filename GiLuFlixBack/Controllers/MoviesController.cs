@@ -154,6 +154,15 @@ namespace GiLuFlixBack.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        //AVALIAR O FILME
+        
+
+
+
+
+
+
         private bool MovieExists(int id)
         {
             return _context.movie.Any(e => e.Id == id);
