@@ -1,8 +1,9 @@
 using GiLuFlixBack.Models;
 
-namespace GiLuFlixBack.Repository;
-
-public interface IReviewRepository
+namespace GiLuFlixBack.Repository
 {
-    Task<Review> PostReview(Review review)
+    public interface IReviewRepository
+    {
+        Task<int> PostReview();
+    }
 }

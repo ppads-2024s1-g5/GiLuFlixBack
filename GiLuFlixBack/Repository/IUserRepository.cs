@@ -1,6 +1,5 @@
 using GiLuFlixBack.Models;
 
-
 namespace GiLuFlixBack.Repository
 {
     public interface IUserRepository

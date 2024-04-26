@@ -1,5 +1,3 @@
-
-
 namespace GiLuFlixBack.Models;
 
 public class Review

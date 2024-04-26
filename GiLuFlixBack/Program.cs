@@ -13,6 +13,7 @@ var connectionString = configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddControllersWithViews();
 
 // Register IUserRepository with its concrete implementation
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Adding auth to api

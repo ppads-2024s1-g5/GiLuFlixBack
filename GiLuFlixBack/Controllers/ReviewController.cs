@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
+using GiLuFlixBack.Repository;
 
 
 
