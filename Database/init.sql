@@ -33,19 +33,19 @@ CREATE TABLE catalog1.User(
 
 INSERT INTO catalog1.User
 VALUES
-(100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,"-"),
-(101, "Lucas G", 21, "admin", "admin","user",false,"-");
+(100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,NULL),
+(101, "Lucas G", 21, "admin", "admin","user",false,NULL);
 
 
-CREATE TABLE catalog1.AVALIACAO_FILME_USUARIO (
-  idAvaliacao INT NOT NULL
-  ,idUser INT NOT NULL
-  ,idMovie INT NOT NULL
-  ,notaFilme INT NOT NULL
-  ,dataHoraAvaliacao TIMESTAMP
+CREATE TABLE catalog1.Review (
+  reviewId INT NOT NULL
+  ,userId INT NOT NULL
+  ,movieId INT NOT NULL
+  ,rating INT NOT NULL
+  ,reviewText VARCHAR(255)
   ,PRIMARY KEY (idAvaliacao)
-  ,CONSTRAINT FK_UserID FOREIGN KEY (idUser)
+  ,CONSTRAINT FK_UserID FOREIGN KEY (userId)
     REFERENCES User(id)
-  ,CONSTRAINT FK_MovieID FOREIGN KEY (idMovie)
+  ,CONSTRAINT FK_MovieID FOREIGN KEY (movieId)
     REFERENCES Movie(id)
 );

@@ -86,10 +86,12 @@ public class UserController : Controller
                 IsPersistent = userFromDb.RememberMe
             });
 
-        if (!String.IsNullOrWhiteSpace(userFromDb.ReturnUrl))
-        {
-            return Redirect(userFromDb.ReturnUrl);
-        }
+        
+        // REDIRECIONAR O USUARIO
+        // if (!String.IsNullOrWhiteSpace(userFromDb.ReturnUrl))
+        // {
+        //     return Redirect(userFromDb.ReturnUrl);
+        // }
 
         return RedirectToAction("Index","Movies");
     }

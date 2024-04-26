@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GiLuFlixBack.Data;
-using GiLuFlixBack.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using GiLuFlixBack.Models;
+using GiLuFlixBack.Data;
+using System.Linq;
+using System;
 
 namespace GiLuFlixBack.Controllers
 {
@@ -153,15 +153,6 @@ namespace GiLuFlixBack.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-
-        //AVALIAR O FILME
-        
-
-
-
-
-
 
         private bool MovieExists(int id)
         {
