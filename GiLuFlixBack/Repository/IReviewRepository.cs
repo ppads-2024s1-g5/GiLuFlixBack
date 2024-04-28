@@ -4,6 +4,6 @@ namespace GiLuFlixBack.Repository
 {
     public interface IReviewRepository
     {
-        Task<int> PostReview();
+        Task<int> PostReview(Review review, string userId);
     }
 }

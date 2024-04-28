@@ -10,7 +10,7 @@ namespace GiLuFlixBack.Models
         [Column("id")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        private int _id;
+        public int id;
 
         [Column("name")]
         public string? name { get; set; }
@@ -31,10 +31,10 @@ namespace GiLuFlixBack.Models
         public string? ReturnUrl { get; set; }
 
         //different way to write the get method :)
-        public int Id
-        {
-            get => _id;
-        }
+        // public int Id
+        // {
+        //     get => _id;
+        // }
 
         public bool isPasswordCorrect (string password)
         {

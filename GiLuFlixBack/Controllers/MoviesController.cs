@@ -44,6 +44,9 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
+            //ViewBag.UserId = _userService.GetCurrentUserId(); // Assuming you have a function to get the current user ID
+            ViewBag.MovieId = id; 
+
             return View(movie);
         }
 

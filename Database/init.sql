@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS catalog1.Movie;
+DROP TABLE IF EXISTS catalog1.User;
+DROP TABLE IF EXISTS catalog1.Review;
+
 CREATE TABLE catalog1.Movie (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
   ,titulo varchar(30)
@@ -38,14 +42,14 @@ VALUES
 
 
 CREATE TABLE catalog1.Review (
-  reviewId INT NOT NULL
+  reviewId INT NOT NULL AUTO_INCREMENT PRIMARY KEY
   ,userId INT NOT NULL
-  ,movieId INT NOT NULL
+  ,itemId INT NOT NULL
   ,rating INT NOT NULL
   ,reviewText VARCHAR(255)
-  ,PRIMARY KEY (idAvaliacao)
+  ,datetimeReview TIMESTAMP
   ,CONSTRAINT FK_UserID FOREIGN KEY (userId)
     REFERENCES User(id)
-  ,CONSTRAINT FK_MovieID FOREIGN KEY (movieId)
+  ,CONSTRAINT FK_MovieID FOREIGN KEY (itemId)
     REFERENCES Movie(id)
 );
