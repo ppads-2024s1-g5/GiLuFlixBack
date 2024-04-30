@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
 using MySqlConnector;
+using System.Data;
 using Dapper;
 
 
@@ -12,30 +13,27 @@ namespace GiLuFlixBack.Repository
     public class UserRepository : IUserRepository
     {
         //private static readonly Lazy<UserRepository> _instance = new Lazy<UserRepository>(() => new UserRepository());
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
+        private readonly IDbConnection _dbConnection;
+
 
         public UserRepository(IConfiguration configuration)
         {
-            _configuration = configuration; 
+            _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
         public async Task<User> SearchByEmail(string email)
         {
-            string sql = @"SELECT * FROM catalog1.User WHERE UPPER(email) = @email;";
-            using (var conn = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-            {
-                //query and return just a single row
-                var user = await conn.QuerySingleAsync<User>(sql, new { email = email.ToUpper() });
 
-                Console.WriteLine("ID: " +user.Id);
-                Console.WriteLine("EMAIL: " +user.email);
-                Console.WriteLine("NOME: " + user.name);
-                Console.WriteLine("IDADE: " + user.age);
-                Console.WriteLine("SENHA: " + user.password);    
+            _dbConnection?.Open();
 
-                return user;
+            string query = @"SELECT * FROM catalog1.User WHERE email = @email;";
+            //query and return just a single row
+            var user = await _dbConnection.QuerySingleAsync<User>(query, new { email = email });
+            return user;
+            
+            _dbConnection?.Close();
 
-            }
         }
     }
 }

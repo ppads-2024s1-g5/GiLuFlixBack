@@ -1,4 +1,4 @@
-@model GiLuFlixBack.Models.Movie
+@model GiLuFlixBack.Models.TvShow
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Filme</h4>
+    <h4>TvShow</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -23,28 +23,16 @@
             @Html.DisplayFor(model => model.diretor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.elencoPrincipal)
+            @Html.DisplayNameFor(model => model.elenco_principal)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.elencoPrincipal)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.pais)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.pais)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ano)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ano)
+            @Html.DisplayFor(model => model.elenco_principal)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-    <a asp-action="RateMovie" asp-route-id="@Model?.Id">Avaliar Filme</a>
+    <a asp-action="RateMovie" asp-route-id="@Model?.Id">Avaliar Tv show</a>
     <a asp-action="Index">Back to List</a>
 </div>
 <br>

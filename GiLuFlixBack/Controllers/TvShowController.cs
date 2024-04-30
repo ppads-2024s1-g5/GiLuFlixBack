@@ -14,22 +14,22 @@ namespace GiLuFlixBack.Controllers
 
     //Notation to verify user auth
     [Authorize]
-    public class MoviesController : Controller
+    public class TvShowController : Controller
     {
         private readonly Context _context;
 
-        public MoviesController(Context context)
+        public TvShowController(Context context)
         {
             _context = context;
         }
 
-        // GET: Movies
+        // GET: tvShow
         public async Task<IActionResult> Index()
         {
-            return View(await _context.movie.ToListAsync());
+            return View(await _context.tvShow.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: tvShow/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,43 +37,42 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.movie
+            var tvShow = await _context.tvShow
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (tvShow == null)
             {
                 return NotFound();
             }
 
-            //ViewBag.UserId = _userService.GetCurrentUserId(); // Assuming you have a function to get the current user ID
-            ViewBag.MovieId = id; 
+            //ViewBag.MovieId = id; 
 
-            return View(movie);
+            return View(tvShow);
         }
 
-        // GET: Movies/Create
+        // GET: tvShow/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: tvShow/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("titulo,diretor,elencoPrincipal,pais,ano")] Movie movie)
+        public async Task<IActionResult> Create([Bind("titulo,diretor,elenco_principal")] TvShow tvShow)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                _context.Add(tvShow);
                 await _context.SaveChangesAsync();
-                //return CreatedAtAction(nameof(movie), new { id = movie.Id }, movie); 
+                //return CreatedAtAction(nameof(tvShow), new { id = tvShow.Id }, tvShow); 
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(tvShow);
         }
 
-        // GET: Movies/Edit/5
+        // GET: tvShow/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,22 +80,22 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.movie.FindAsync(id);
-            if (movie == null)
+            var tvShow = await _context.tvShow.FindAsync(id);
+            if (tvShow == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            return View(tvShow);
         }
 
-        // POST: Movies/Edit/5
+        // POST: tvShow/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,titulo,diretor,elencoPrincipal,pais,ano")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("id,titulo,diretor,elenco_principal")] TvShow tvShow)
         {
-            if (id != movie.Id)
+            if (id != tvShow.Id)
             {
                 return NotFound();
             }
@@ -105,12 +104,12 @@ namespace GiLuFlixBack.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    _context.Update(tvShow);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!TvShowExists(tvShow.Id))
                     {
                         return NotFound();
                     }
@@ -121,10 +120,10 @@ namespace GiLuFlixBack.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(tvShow);
         }
 
-        // GET: Movies/Delete/5
+        // GET: tvShow/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,34 +131,34 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.movie
+            var tvShow = await _context.tvShow
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (tvShow == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(tvShow);
         }
 
-        // POST: Movies/Delete/5
+        // POST: tvShow/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.movie.FindAsync(id);
-            if (movie != null)
+            var tvShow = await _context.tvShow.FindAsync(id);
+            if (tvShow != null)
             {
-                _context.movie.Remove(movie);
+                _context.tvShow.Remove(tvShow);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool TvShowExists(int id)
         {
-            return _context.movie.Any(e => e.Id == id);
+            return _context.tvShow.Any(e => e.Id == id);
         }
     }
 }

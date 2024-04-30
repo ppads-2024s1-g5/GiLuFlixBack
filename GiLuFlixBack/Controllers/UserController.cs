@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using GiLuFlixBack.Repository;
 using System.Threading.Tasks;
 using System.Security.Claims;
-using GiLuFlixBack.Repository;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
 using System.Linq;
@@ -51,6 +51,13 @@ public class UserController : Controller
         }
 
         User userFromDb = await _userRepository.SearchByEmail(user.email);
+        string userFromDbInfo = $"INFORMAÇÃO RECEBIDA DO BANCO:\n" +
+                                $"Id: {userFromDb.id}\n" +
+                                $"Email: {userFromDb.email}\n" +
+                                $"Senha: {userFromDb.password}\n" +
+                                $"Lembrar de mim: {userFromDb.RememberMe}\n";
+        
+        Console.WriteLine(userFromDbInfo);
         
         if (userFromDb.email == null)
         {
@@ -61,17 +68,10 @@ public class UserController : Controller
         {
             return ViewBag("Senha incorreta!");
         }        
-        
-        // autorizando o usuario
-        var userVar = new
-         {
-             Id = userFromDb.Id,
-             Name = userFromDb.name
-         };
 
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, userFromDb.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, userFromDb.id.ToString()),
             new Claim(ClaimTypes.Name, userFromDb.name)
         ];
         var authScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -85,7 +85,6 @@ public class UserController : Controller
             {
                 IsPersistent = userFromDb.RememberMe
             });
-
         
         // REDIRECIONAR O USUARIO
         // if (!String.IsNullOrWhiteSpace(userFromDb.ReturnUrl))

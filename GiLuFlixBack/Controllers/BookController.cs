@@ -14,11 +14,11 @@ namespace GiLuFlixBack.Controllers
 
     //Notation to verify user auth
     [Authorize]
-    public class MoviesController : Controller
+    public class BookController : Controller
     {
         private readonly Context _context;
 
-        public MoviesController(Context context)
+        public BookController(Context context)
         {
             _context = context;
         }
@@ -26,7 +26,7 @@ namespace GiLuFlixBack.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.movie.ToListAsync());
+            return View(await _context.book.ToListAsync());
         }
 
         // GET: Movies/Details/5
