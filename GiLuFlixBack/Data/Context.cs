@@ -12,8 +12,12 @@ public class Context : DbContext
     {
         modelBuilder.Entity<Movie>().Property(p => p.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<User>().Property(p => p.id).UseIdentityColumn(); 
+        modelBuilder.Entity<Book>().Property(p => p.Id).UseIdentityColumn(); 
+        modelBuilder.Entity<TvShow>().Property(p => p.Id).UseIdentityColumn(); 
     }
 
     public DbSet<Movie> movie { get; set; }
     public DbSet<User> user { get; set; }
+    public DbSet<Book> book { get; set; }
+    public DbSet<TvShow> tvShow { get; set; }
 }

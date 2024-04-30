@@ -1,0 +1,56 @@
+@model GiLuFlixBack.Models.Book
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.titulo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.titulo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.autor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.autor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.editora)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.editora)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    <a asp-action="RateMovie" asp-route-id="@Model?.Id">Avaliar Filme</a>
+    <a asp-action="Index">Back to List</a>
+</div>
+<br>
+<form id="reviewForm" asp-action="RateMovie" asp-controller="Review">
+    <div class="form-group">
+        <label for="reviewText">Comentário</label>
+        <textarea id="reviewText" class="form-control" name="reviewText" rows="5"></textarea>
+        <div class="d-flex">
+            <label for="rating">Rating</label>
+            <input type="radio" id="rating1" name="rating" value="1">
+            <label for="rating">1</label><br>
+            <input type="radio" id="rating2" name="rating" value="2">
+            <label for="rating">2</label><br>
+            <input type="radio" id="rating3" name="rating" value="3">
+            <label for="rating">3</label>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+    <input type="hidden" id="movieId" name="itemId" value="@ViewBag.MovieId" />
+    <input type="hidden" id="movieId" name="userId" value="@ViewBag.UserId" />
+</form>
