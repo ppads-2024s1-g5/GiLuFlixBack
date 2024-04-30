@@ -4,9 +4,7 @@ DROP TABLE IF EXISTS catalog1.TvShow;
 DROP TABLE IF EXISTS catalog1.User;
 DROP TABLE IF EXISTS catalog1.Review;
 
-
---====================
---TABELA FILME
+#TABELA FILME
 
 CREATE TABLE catalog1.Movie (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
@@ -31,8 +29,7 @@ VALUES
 (10, "O Silencio dos Inocentes", "Jonathan Demme", "...", "USA", 1991);
 
 
---====================
--- TABELA LIVRO
+# TABELA LIVRO
 
 CREATE TABLE catalog1.Book (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
@@ -44,8 +41,7 @@ CREATE TABLE catalog1.Book (
 INSERT INTO catalog1.Book (titulo, autor, editora)
 VALUES ("Mito de sisifo", "Albert Camus", "Editora Record");
 
---====================
--- TABELA TV SHOW
+# TABELA TV SHOW
 
 CREATE TABLE catalog1.TvShow(
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
@@ -58,8 +54,7 @@ INSERT INTO catalog1.TvShow (titulo, diretor, elenco_principal)
 VALUES ("Breaking bad","Vince Gilligan", "Aaron Paul, Bryan Cranston");
 
 
---====================
--- TABELA USER
+# TABELA USER
 
 CREATE TABLE catalog1.User(
    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
@@ -77,10 +72,7 @@ VALUES
 (100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,NULL),
 (101, "Lucas G", 21, "admin", "admin","user",false,NULL);
 
-
-
---====================
--- TABELA REVIEW 
+# TABELA REVIEW 
 
 CREATE TABLE catalog1.Review (
   reviewId INT NOT NULL AUTO_INCREMENT PRIMARY KEY
