@@ -13,20 +13,20 @@ public class Book
     public int Id {get;set;}
 
     [Display(Name = "Titulo")]
-    [Column("titulo")]
-    public string? titulo { get; set; }
+    [Column("title")]
+    public string? Title { get; set; }
 
     [Display(Name = "Autor")]
-    [Column("autor")]
-    public string? autor { get; set; }
+    [Column("author")]
+    public string? Author { get; set; }
 
     [Display(Name = "Editora")]
     [Column("editora")]
-    public string? editora { get; set; }
+    public string? Publisher { get; set; }
 
     public Book(string tit, string aut){
-      titulo = tit;
-      autor = aut;
+      Title = tit;
+      Author = aut;
     }
 
     public Book(){}

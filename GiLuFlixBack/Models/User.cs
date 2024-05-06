@@ -10,18 +10,18 @@ namespace GiLuFlixBack.Models
         [Column("id")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id;
+        public int Id;
 
-        [Column("name")]
-        public string? name { get; set; }
+        [Column("Name")]
+        public string? Name { get; set; }
 
-        public int? age { get; set; }
-
-        [Required]
-        public string email { get; set; }
+        public int? Age { get; set; }
 
         [Required]
-        public string password { get; set; }
+        public string Email { get; set; }
+
+        [Required]
+        public string Password { get; set; }
 
         [Column("userRole")]
         private string? _role { get; set; }
@@ -38,7 +38,7 @@ namespace GiLuFlixBack.Models
 
         public bool isPasswordCorrect (string password)
         {
-            return password == this.password;
+            return password == this.Password;
         }
 
         public User() { }

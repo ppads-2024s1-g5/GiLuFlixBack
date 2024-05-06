@@ -37,42 +37,42 @@ public class UserController : Controller
     {
 
         string userInfo = $"INFORMAÇÃO RECEBIDA DO FORMULARIO:\n" +
-                      $"Email: {user.email}\n" +
-                      $"Senha: {user.password}\n" +
+                      $"Email: {user.Email}\n" +
+                      $"Senha: {user.Password}\n" +
                       $"Lembrar de mim: {user.RememberMe}\n";
 
         Console.WriteLine(userInfo);
 
-        // Validate presence of email and password
-        if (string.IsNullOrEmpty(user.email) || string.IsNullOrEmpty(user.password))
+        // Validate presence of Email and Password
+        if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
         {
             ViewBag.Fail = "Email e/ou senha obrigatórios!";
             return View(); // Return login view with error message
         }
 
-        User userFromDb = await _userRepository.SearchByEmail(user.email);
+        User userFromDb = await _userRepository.SearchByEmail(user.Email);
         string userFromDbInfo = $"INFORMAÇÃO RECEBIDA DO BANCO:\n" +
-                                $"Id: {userFromDb.id}\n" +
-                                $"Email: {userFromDb.email}\n" +
-                                $"Senha: {userFromDb.password}\n" +
+                                $"Id: {userFromDb.Id}\n" +
+                                $"Email: {userFromDb.Email}\n" +
+                                $"Senha: {userFromDb.Password}\n" +
                                 $"Lembrar de mim: {userFromDb.RememberMe}\n";
         
         Console.WriteLine(userFromDbInfo);
         
-        if (userFromDb.email == null)
+        if (userFromDb.Email == null)
         {
             return ViewBag("Usuário não encontrado!");
         }   
 
-        if (userFromDb.isPasswordCorrect(user.password) == false)
+        if (userFromDb.isPasswordCorrect(user.Password) == false)
         {
             return ViewBag("Senha incorreta!");
         }        
 
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, userFromDb.id.ToString()),
-            new Claim(ClaimTypes.Name, userFromDb.name)
+            new Claim(ClaimTypes.NameIdentifier, userFromDb.Id.ToString()),
+            new Claim(ClaimTypes.Name, userFromDb.Name)
         ];
         var authScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 

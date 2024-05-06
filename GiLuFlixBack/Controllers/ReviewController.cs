@@ -37,20 +37,20 @@ namespace GiLuFlixBack.Controllers;
             var claimsPrincipal = HttpContext.User;
             // if (claimsPrincipal.Identity.IsAuthenticated)
             // {
-            string userId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            string UserId = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             string userName = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
             string sendToReview = $"INFORMAÇÃO RECEBIDA DO FORMULARIO (review):\n" +
-                                $"Texto avaliação: {review.reviewText}\n" +
-                                $"Item rating: {review.rating}\n" +
-                                $"Review user ID: {userId}\n" +
-                                $"Review item ID: {review.itemId}\n" +
-                                $"Texto id: {review.reviewId}\n";
+                                $"Texto avaliação: {review.ReviewText}\n" +
+                                $"Item Rating: {review.Rating}\n" +
+                                $"Review user ID: {UserId}\n" +
+                                $"Review item ID: {review.ItemId}\n" +
+                                $"Texto id: {review.ReviewId}\n";
             Console.WriteLine(sendToReview);
 
-            if (userId != null)
+            if (UserId != null)
             {
                 Console.WriteLine("CHAMANDO O METODO POST REVIEW");
-                _reviewRepository.PostReview(review, userId);
+                _reviewRepository.PostReview(review, UserId);
             }
             else
             {
