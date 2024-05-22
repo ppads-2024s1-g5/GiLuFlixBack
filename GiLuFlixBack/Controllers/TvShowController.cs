@@ -60,7 +60,7 @@ namespace GiLuFlixBack.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("titulo,diretor,elenco_principal")] TvShow tvShow)
+        public async Task<IActionResult> Create([Bind("Title,Director,Cast")] TvShow tvShow)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace GiLuFlixBack.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,titulo,diretor,elenco_principal")] TvShow tvShow)
+        public async Task<IActionResult> Edit(int id, [Bind("id,Title,Director,Cast")] TvShow tvShow)
         {
             if (id != tvShow.Id)
             {

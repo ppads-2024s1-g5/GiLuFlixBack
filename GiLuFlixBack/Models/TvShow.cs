@@ -13,20 +13,20 @@ public class TvShow
     public int Id {get;set;}
 
     [Display(Name = "Titulo")]
-    [Column("titulo")]
-    public string? titulo { get; set; }
+    [Column("Title")]
+    public string? Title { get; set; }
 
     [Display(Name = "Diretor")]
-    [Column("diretor")]
-    public string? diretor { get; set; }
+    [Column("Director")]
+    public string? Director { get; set; }
 
     [Display(Name = "Elenco principal")]
-    [Column("elenco_principal")]
-    public string? elenco_principal { get; set; }
+    [Column("Cast")]
+    public string? Cast { get; set; }
 
     public TvShow(string tit, string dir){
-      titulo = tit;
-      diretor = dir;
+      Title = tit;
+      Director = dir;
     }
 
     public TvShow(){}

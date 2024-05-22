@@ -21,14 +21,14 @@ namespace GiLuFlixBack.Repository
             _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
-        public async Task<int> PostReview(Review review, string userId)
+        public async Task<int> PostReview(Review review, string UserId)
         {
             _dbConnection?.Open();
 
-            var parameters = new { userId = userId, itemId = review.itemId, rating = review.rating, reviewText = review.reviewText };
+            var parameters = new { UserId = UserId, ItemId = review.ItemId, Rating = review.Rating, ReviewText = review.ReviewText };
             Console.WriteLine(parameters);
-            string query = @"INSERT INTO catalog1.Review (userId, itemId, rating, reviewText, datetimeReview)
-                             VALUES (@userId, @itemId, @rating, @reviewText, current_timestamp); ";
+            string query = @"INSERT INTO catalog1.Review (UserId, ItemId, Rating, ReviewText, DatetimeReview)
+                             VALUES (@UserId, @ItemId, @Rating, @ReviewText, current_timestamp); ";
 
             Console.WriteLine("EXECUTANDO A QUERY\n" + query);                  
             var rowsAffected = await _dbConnection.ExecuteAsync(query, parameters);

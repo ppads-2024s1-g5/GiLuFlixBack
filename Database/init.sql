@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS catalog1.Review;
 #TABELA FILME
 
 CREATE TABLE catalog1.Movie (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-  ,titulo varchar(30)
-  ,diretor varchar(30)
-  ,elenco_principal varchar(30)
-  ,pais varchar(30)
-  ,ano int
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  ,Title varchar(30)
+  ,Director varchar(30)
+  ,Cast varchar(30)
+  ,Country varchar(30)
+  ,Year int
 );
 
 INSERT INTO catalog1.Movie
@@ -32,39 +32,39 @@ VALUES
 # TABELA LIVRO
 
 CREATE TABLE catalog1.Book (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-  ,titulo varchar(50)
-  ,autor varchar(40)
-  ,editora varchar(50)
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  ,Title varchar(50)
+  ,Author varchar(40)
+  ,Publisher varchar(50)
 );
 
-INSERT INTO catalog1.Book (titulo, autor, editora)
+INSERT INTO catalog1.Book (Title, Author, Publisher)
 VALUES ("Mito de sisifo", "Albert Camus", "Editora Record");
 
 # TABELA TV SHOW
 
 CREATE TABLE catalog1.TvShow(
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-  ,titulo varchar(50)
-  ,diretor varchar(40)
-  ,elenco_principal varchar(255)
+  Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  ,Title varchar(50)
+  ,Director varchar(40)
+  ,Cast varchar(255)
 );
 
-INSERT INTO catalog1.TvShow (titulo, diretor, elenco_principal)
+INSERT INTO catalog1.TvShow (Title, Director, Cast)
 VALUES ("Breaking bad","Vince Gilligan", "Aaron Paul, Bryan Cranston");
 
 
 # TABELA USER
 
 CREATE TABLE catalog1.User(
-   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-  ,name VARCHAR(255)
-  ,age INT
-  ,email VARCHAR(255) UNIQUE
-  ,password VARCHAR(255)
-  ,userRole VARCHAR(255)
-  ,rememberMe BOOLEAN
-  ,returnUrl VARCHAR(255)
+   Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  ,Name VARCHAR(255)
+  ,Age INT
+  ,Email VARCHAR(255) UNIQUE
+  ,Password VARCHAR(255)
+  ,UserRole VARCHAR(255)
+  ,RememberMe BOOLEAN
+  ,ReturnUrl VARCHAR(255)
 );
 
 INSERT INTO catalog1.User
@@ -75,16 +75,16 @@ VALUES
 # TABELA REVIEW 
 
 CREATE TABLE catalog1.Review (
-  reviewId INT NOT NULL AUTO_INCREMENT PRIMARY KEY
-  ,userId INT NOT NULL
-  ,itemId INT NOT NULL
-  ,rating INT NOT NULL
-  ,reviewText VARCHAR(255)
-  ,datetimeReview TIMESTAMP
+  ReviewId INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+  ,UserId INT NOT NULL
+  ,ItemId INT NOT NULL
+  ,Rating INT NOT NULL
+  ,ReviewText VARCHAR(255)
+  ,DatetimeReview TIMESTAMP
   ,CONSTRAINT FK_UserID FOREIGN KEY (userId)
-    REFERENCES User(id)
+    REFERENCES User(Id)
   ,CONSTRAINT FK_MovieID FOREIGN KEY (itemId)
-    REFERENCES Movie(id)
+    REFERENCES Movie(Id)
 );
 
 

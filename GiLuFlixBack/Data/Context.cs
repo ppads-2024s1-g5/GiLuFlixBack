@@ -11,7 +11,6 @@ public class Context : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Movie>().Property(p => p.Id).ValueGeneratedOnAdd();
-        modelBuilder.Entity<User>().Property(p => p.id).UseIdentityColumn(); 
         modelBuilder.Entity<Book>().Property(p => p.Id).UseIdentityColumn(); 
         modelBuilder.Entity<TvShow>().Property(p => p.Id).UseIdentityColumn(); 
     }

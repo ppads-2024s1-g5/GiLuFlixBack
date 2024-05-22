@@ -12,29 +12,29 @@ public class Movie
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id {get;set;}
 
-    [Display(Name = "Titulo")]
-    [Column("titulo")]
-    public string? titulo { get; set; }
+    [Display(Name = "Title")]
+    [Column("Title")]
+    public string? Title { get; set; }
 
-    [Display(Name = "Diretor")]
-    [Column("diretor")]
-    public string? diretor { get; set; }
+    [Display(Name = "Director")]
+    [Column("Director")]
+    public string? Director { get; set; }
 
     [Display(Name = "Elenco Principal")]
-    [Column("elenco_principal")]
-    public string? elencoPrincipal { get; set; }
+    [Column("Cast")]
+    public string? Cast { get; set; }
 
-    [Display(Name = "Pais")]
-    [Column("pais")]
-    public string? pais { get; set; }
+    [Display(Name = "Country")]
+    [Column("Country")]
+    public string? Country { get; set; }
 
-    [Display(Name = "Ano")]
-    [Column("ano")]
-    public int? ano { get; set; }
+    [Display(Name = "Year")]
+    [Column("Year")]
+    public int? Year { get; set; }
 
     public Movie(string titulo_, string diretor_){
-      titulo = titulo_;
-      diretor = diretor_;
+      Title = titulo_;
+      Director = diretor_;
     }
 
     public Movie(){}
