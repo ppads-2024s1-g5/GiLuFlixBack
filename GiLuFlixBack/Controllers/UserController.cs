@@ -8,7 +8,6 @@ using GiLuFlixBack.Repository;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using GiLuFlixBack.Models;
-using GiLuFlixBack.Data;
 using System.Linq;
 using System;
 
@@ -17,12 +16,10 @@ using System;
 namespace GiLuFlixBack.Controllers;
 public class UserController : Controller
 {
-    private readonly Context _context;
     private readonly IUserRepository _userRepository;
 
     public UserController(Context context, IUserRepository userRepository)
     {
-        _context = context;
         _userRepository = userRepository;
     }
 
@@ -38,7 +35,7 @@ public class UserController : Controller
 
         string userInfo = $"INFORMAÇÃO RECEBIDA DO FORMULARIO:\n" +
                       $"Email: {user.Email}\n" +
-                      $"Senha: {user.Password}\n" +
+                      $"Senha:Q {user.Password}\n" +
                       $"Lembrar de mim: {user.RememberMe}\n";
 
         Console.WriteLine(userInfo);
@@ -85,13 +82,6 @@ public class UserController : Controller
             {
                 IsPersistent = userFromDb.RememberMe
             });
-        
-        // REDIRECIONAR O USUARIO
-        // if (!String.IsNullOrWhiteSpace(userFromDb.ReturnUrl))
-        // {
-        //     return Redirect(userFromDb.ReturnUrl);
-        // }
-
         return RedirectToAction("Index","Movies");
     }
 
@@ -100,6 +90,14 @@ public class UserController : Controller
         await HttpContext.SignOutAsync();
         return RedirectToRoute("User.Login");
     }
+
+
+
+    public async Task<IActionResult> Dashboard()
+    {
+        return View();
+    }
+
 
 
 }

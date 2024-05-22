@@ -35,5 +35,21 @@ namespace GiLuFlixBack.Repository
             _dbConnection?.Close();
 
         }
+
+        public async Task<int> Create(string name, string email, string password)
+        {
+            _dbConnection?.Open();
+
+            var parameters = new { Name = name, Email = email, Password = password };            
+            string query = @"INSERT INTO catalog1.User (Name,Email, Password)
+                            VALUES (@Name,@Email,@Password);";
+            
+            var rowsAffected = await _dbConnection.ExecuteAsync(query, parameters);
+            Console.WriteLine($"{rowsAffected} row(s) inserted.");
+            return rowsAffected;
+            _dbConnection?.Close();
+
+        }
+
     }
 }
