@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GiLuFlixBack.Models.ReviewDTO;
 using System.Globalization;
 
 namespace GiLuFlixBack.Models;
@@ -12,6 +13,7 @@ public class Book
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id {get;set;}
 
+
     [Display(Name = "Titulo")]
     [Column("Title")]
     public string? Title { get; set; }
@@ -23,6 +25,10 @@ public class Book
     [Display(Name = "Editora")]
     [Column("Publisher")]
     public string? Publisher { get; set; }
+
+    [Display(Name = "Review")]
+    [Column("Review")]
+    public ICollection<ReviewResponse> Reviews { get; set; }
 
     public Book(string tit, string aut){
       Title = tit;

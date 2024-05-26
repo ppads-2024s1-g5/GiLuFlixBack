@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using GiLuFlixBack.Models;
+using GiLuFlixBack.Repository;
 using GiLuFlixBack.Data;
 using System.Linq;
 using System;
@@ -17,10 +18,12 @@ namespace GiLuFlixBack.Controllers
     public class BookController : Controller
     {
         private readonly Context _context;
+        private readonly ReviewRepository _reviewRepository;
 
-        public BookController(Context context)
+        public BookController(Context context, ReviewRepository reviewRepository)
         {
             _context = context;
+            _reviewRepository = reviewRepository;
         }
 
         // GET: Movies
@@ -37,18 +40,22 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            var book = await _context.book
+             var book = await _context.book
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
                 return NotFound();
             }
+            
+            var reviews = await _reviewRepository.GetAllItemReviews(id.Value);
+            
+            book.Reviews = reviews;
 
-            //ViewBag.UserId = _userService.GetCurrentUserId(); // Assuming you have a function to get the current user ID
             ViewBag.BookId = id; 
 
             return View(book);
         }
+
 
         // GET: Movies/Create
         public IActionResult Create()

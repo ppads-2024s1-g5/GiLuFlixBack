@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using GiLuFlixBack.Repository;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
 using System.Linq;
@@ -17,10 +18,12 @@ namespace GiLuFlixBack.Controllers
     public class TvShowController : Controller
     {
         private readonly Context _context;
+        private readonly ReviewRepository _reviewRepository;
 
-        public TvShowController(Context context)
+        public TvShowController(Context context, ReviewRepository reviewRepository)
         {
             _context = context;
+            _reviewRepository = reviewRepository;
         }
 
         // GET: tvShow
@@ -44,7 +47,9 @@ namespace GiLuFlixBack.Controllers
                 return NotFound();
             }
 
-            //ViewBag.MovieId = id; 
+            var reviews = await _reviewRepository.GetAllItemReviews(id.Value);
+            
+            tvShow.Reviews = reviews;
 
             return View(tvShow);
         }

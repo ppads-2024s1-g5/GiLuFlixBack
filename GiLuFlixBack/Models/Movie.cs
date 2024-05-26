@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GiLuFlixBack.Models.ReviewDTO;
 using System.Globalization;
 
 namespace GiLuFlixBack.Models;
@@ -31,6 +32,10 @@ public class Movie
     [Display(Name = "Year")]
     [Column("Year")]
     public int? Year { get; set; }
+
+    [Display(Name = "Review")]
+    [Column("Review")]
+    public ICollection<ReviewResponse> Reviews { get; set; }
 
     public Movie(string titulo_, string diretor_){
       Title = titulo_;

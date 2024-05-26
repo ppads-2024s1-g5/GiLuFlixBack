@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS catalog1.Movie;
+DROP TABLE IF EXISTS catalog1.Review;
 DROP TABLE IF EXISTS catalog1.Book;
 DROP TABLE IF EXISTS catalog1.TvShow;
 DROP TABLE IF EXISTS catalog1.User;
-DROP TABLE IF EXISTS catalog1.Review;
+DROP TABLE IF EXISTS catalog1.Movie;
 
 #TABELA FILME
 
@@ -39,7 +39,11 @@ CREATE TABLE catalog1.Book (
 );
 
 INSERT INTO catalog1.Book (Title, Author, Publisher)
-VALUES ("Mito de sisifo", "Albert Camus", "Editora Record");
+VALUES ("Mito de sisifo", "Albert Camus", "Editora Record"),
+       ("Clean Code", "Uncle Bob", "Editora Record"),
+       ("Mito de sisifo", "Albert Camus", "Editora Record"),
+       ("Mito de sisifo", "Albert Camus", "Editora Record")
+       ;
 
 # TABELA TV SHOW
 
@@ -71,6 +75,34 @@ INSERT INTO catalog1.User
 VALUES
 (100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,NULL),
 (101, "Lucas G", 21, "admin", "admin","user",false,NULL);
+(102, "Vitor", 29, "vitor@gmail", "123","user",true,NULL),
+(103, "Arthur", 30, "arthur@gmail.com", "123","user",false,NULL);
+
+# TABELA AMIZADE E PEDIDOS DE AMIZADE
+CREATE TABLE Friendships (
+    FriendshipId INT PRIMARY KEY AUTO_INCREMENT,
+    UserId1 INT,
+    UserId2 INT,
+    FOREIGN KEY (UserId1) REFERENCES Users(UserId),
+    FOREIGN KEY (UserId2) REFERENCES Users(UserId),
+    UNIQUE KEY (UserId1, UserId2)
+);
+
+CREATE TABLE FriendshipRequests (
+    RequestId INT PRIMARY KEY AUTO_INCREMENT,
+    RequesterId INT,
+    RecipientId INT,
+    FOREIGN KEY (RequesterId) REFERENCES Users(UserId),
+    FOREIGN KEY (RecipientId) REFERENCES Users(UserId)
+);
+
+
+
+
+
+
+
+
 
 # TABELA REVIEW 
 
@@ -80,6 +112,7 @@ CREATE TABLE catalog1.Review (
   ,ItemId INT NOT NULL
   ,Rating INT NOT NULL
   ,ReviewText VARCHAR(255)
+  ,Likes INT
   ,DatetimeReview TIMESTAMP
   ,CONSTRAINT FK_UserID FOREIGN KEY (userId)
     REFERENCES User(Id)
@@ -88,9 +121,9 @@ CREATE TABLE catalog1.Review (
 );
 
 
-INSERT INTO catalog1.Review
+INSERT INTO catalog1.Review 
 VALUES 
-(10000, 101, 1,3,"Filme excelente", CURRENT_TIMESTAMP),
-(10001, 100, 1,3,"Filme muito legal", CURRENT_TIMESTAMP),
-(10002, 101, 2,1,"Filme fraco", CURRENT_TIMESTAMP);
+(10000, 101, 1,3,"Filme excelente", 0, CURRENT_TIMESTAMP),
+(10001, 100, 1,3,"Filme muito legal", 0, CURRENT_TIMESTAMP),
+(10002, 101, 2,1,"Filme fraco", 10, CURRENT_TIMESTAMP);
 

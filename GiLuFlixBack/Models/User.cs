@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using GiLuFlixBack.Models.ReviewDTO;
 using System.Globalization;
 
 namespace GiLuFlixBack.Models
@@ -7,7 +8,6 @@ namespace GiLuFlixBack.Models
     [Table("User")]
     public class User
     {
-        [Column("id")]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id;
@@ -30,6 +30,13 @@ namespace GiLuFlixBack.Models
 
         public string? ReturnUrl { get; set; }
 
+
+        public List<User> Friends { get; set; }
+
+        public List<User> FriendshipRequests { get; set; }
+
+        public ICollection<ReviewResponse> Reviews { get; set; }
+
         //different way to write the get method :)
         // public int Id
         // {
@@ -39,6 +46,15 @@ namespace GiLuFlixBack.Models
         public bool isPasswordCorrect (string password)
         {
             return password == this.Password;
+        }
+
+        public void AddUserToFriends(User user)
+        {
+            if (FriendshipRequests.Contains(user))
+            {
+                Friends.Add(user);
+                FriendshipRequests.Remove(user);
+            }
         }
 
         public User() { }

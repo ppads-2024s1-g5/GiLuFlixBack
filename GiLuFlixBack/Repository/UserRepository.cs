@@ -51,5 +51,28 @@ namespace GiLuFlixBack.Repository
 
         }
 
+        public async Task<User> GetUserById(int Id)
+        {
+
+            var parameters = new { UserId = Id };            
+            string query = @"SELECT * FROM catalog1.User
+                            WHERE Id = @UserId;";
+            
+            User user = await _dbConnection.QuerySingleAsync<User>(query, parameters);
+            Console.WriteLine($"{user} returned.");
+            _dbConnection?.Close();
+            return user;
+        }
+
+        public async Task<int> requestFriendship(int requesterId,int requestedId )
+        {
+            int rowsAffected =  await _dbConnection.ExecuteAsync(
+                "INSERT INTO FriendshipRequests (RequesterId, RecipientId) VALUES (@SolicitanteId, @DestinatarioId)",
+                new { SolicitanteId = requesterId, DestinatarioId = requestedId }
+            );
+
+            return rowsAffected;
+        }
+
     }
 }

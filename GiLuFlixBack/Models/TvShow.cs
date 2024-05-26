@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using GiLuFlixBack.Models.ReviewDTO;
 
 namespace GiLuFlixBack.Models;
-
 [Table("TvShow")]
 public class TvShow
 {
@@ -23,6 +23,10 @@ public class TvShow
     [Display(Name = "Elenco principal")]
     [Column("Cast")]
     public string? Cast { get; set; }
+
+    [Display(Name = "Review")]
+    [Column("Review")]
+    public ICollection<ReviewResponse> Reviews { get; set; }
 
     public TvShow(string tit, string dir){
       Title = tit;

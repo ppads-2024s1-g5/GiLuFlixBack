@@ -5,7 +5,7 @@
 }
 
 <h1>Details</h1>
-
+<div style="display: flex;">
 <div>
     <h4>TvShow</h4>
     <hr />
@@ -29,13 +29,14 @@
             @Html.DisplayFor(model => model.Cast)
         </dd>
     </dl>
-</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-    <a asp-action="RateMovie" asp-route-id="@Model?.Id">Avaliar Tv show</a>
     <a asp-action="Index">Back to List</a>
 </div>
+</div>
+
 <br>
+<div style="margin-top: 5%; width:600px"> 
 <form id="reviewForm" asp-action="RateMovie" asp-controller="Review">
     <div class="form-group">
         <label for="ReviewText">Comentário</label>
@@ -54,3 +55,12 @@
     <input type="hidden" id="MovieId" name="ItemId" value="@ViewBag.MovieId" />
     <input type="hidden" id="MovieId" name="UserId" value="@ViewBag.UserId" />
 </form>
+</div>
+</div>
+<h2>Comentários:</h2>
+@foreach (var review in Model.Reviews) {
+    <p><a href="@Url.Action("DetailsById", "User", new { id = review.UserId })">@review.Name</a> - @review.DatetimeReview</p>
+    <p>Nota: @review.Rating</p>
+    <p>@review.ReviewText</p>
+    <hr/>
+}

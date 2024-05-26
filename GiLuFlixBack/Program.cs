@@ -15,6 +15,7 @@ builder.Services.AddControllersWithViews();
 // Register IUserRepository with its concrete implementation
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ReviewRepository>();
 
 // Adding auth to api
 builder.Services

@@ -17,10 +17,12 @@ namespace GiLuFlixBack.Controllers;
 public class UserController : Controller
 {
     private readonly IUserRepository _userRepository;
+    private readonly IReviewRepository _reviewRepository;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUserRepository userRepository, IReviewRepository ReviewRepository)
     {
         _userRepository = userRepository;
+        _reviewRepository = ReviewRepository;
     }
 
     [HttpGet]
@@ -32,14 +34,6 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Login([FromForm] User user)
     {
-
-        string userInfo = $"INFORMAÇÃO RECEBIDA DO FORMULARIO:\n" +
-                      $"Email: {user.Email}\n" +
-                      $"Senha:Q {user.Password}\n" +
-                      $"Lembrar de mim: {user.RememberMe}\n";
-
-        Console.WriteLine(userInfo);
-
         // Validate presence of Email and Password
         if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
         {
@@ -48,13 +42,6 @@ public class UserController : Controller
         }
 
         User userFromDb = await _userRepository.SearchByEmail(user.Email);
-        string userFromDbInfo = $"INFORMAÇÃO RECEBIDA DO BANCO:\n" +
-                                $"Id: {userFromDb.Id}\n" +
-                                $"Email: {userFromDb.Email}\n" +
-                                $"Senha: {userFromDb.Password}\n" +
-                                $"Lembrar de mim: {userFromDb.RememberMe}\n";
-        
-        Console.WriteLine(userFromDbInfo);
         
         if (userFromDb.Email == null)
         {
@@ -99,5 +86,37 @@ public class UserController : Controller
     }
 
 
+    public async Task<IActionResult> DetailsById(int id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
 
+        User user = await _userRepository.GetUserById(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var reviews = await _reviewRepository.GetAllItemReviews(id);
+        
+        user.Reviews = reviews;
+
+        return View(user);
+    }
+
+    public async Task<IActionResult> requestFriendship(int requesterId, int requestedId)
+    {
+        try
+        {   
+            _userRepository.requestFriendship(requesterId,requestedId);
+            return RedirectToAction("Index", "Home");
+        }
+        catch (InvalidOperationException ex)
+        {
+            ViewBag.ErrorMessage = ex.Message;
+            return View();
+        }
+    }
 }
