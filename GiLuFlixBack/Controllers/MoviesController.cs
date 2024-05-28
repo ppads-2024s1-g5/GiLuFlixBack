@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using GiLuFlixBack.Repository;
 using System.Threading.Tasks;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
@@ -17,10 +18,12 @@ namespace GiLuFlixBack.Controllers
     public class MoviesController : Controller
     {
         private readonly Context _context;
+        private readonly ReviewRepository _reviewRepository;
 
-        public MoviesController(Context context)
+        public MoviesController(Context context, ReviewRepository reviewRepository)
         {
             _context = context;
+            _reviewRepository = reviewRepository;
         }
 
         // GET: Movies
@@ -43,6 +46,9 @@ namespace GiLuFlixBack.Controllers
             {
                 return NotFound();
             }
+            
+            var reviews = await _reviewRepository.GetAllItemReviews(id.Value);
+            movie.Reviews = reviews;
 
             //ViewBag.UserId = _userService.GetCurrentUserId(); // Assuming you have a function to get the current user ID
             ViewBag.MovieId = id; 

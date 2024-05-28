@@ -1,5 +1,7 @@
 @model GiLuFlixBack.Models.User
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Danfo&display=swap" rel="stylesheet">
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -16,18 +18,12 @@
         <div class="header">
             <h1>Dashboard do Administrador</h1>
         </div>
-        <div class="menu">
-            <a href="#">Página Inicial</a>
-            <a href="#">Usuários</a>
-            <a href="#">Configurações</a>
+        <div class="menu" style="display: flex; justify-content: space-between; width:50%;">
             <!-- Adicione mais links de menu conforme necessário -->
         </div>
-<div>
-  <canvas id="myChart"></canvas>
-</div>
-<div>
-  <canvas id="myChart"></canvas>
-</div>
+        <div style="width: 800px; height: 800px; margin-top: 5%; margin-left: -20%">
+          <canvas id="myChart"></canvas>
+        </div>
     </div>
 </body>
 </html>
@@ -38,9 +34,9 @@
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: ['Livros', 'Filmes', 'Séries'],
       datasets: [{
-        label: '# of Votes',
+        label: '# of Items',
         data: [12, 19, 3, 5, 2, 3],
         borderWidth: 1
       }]

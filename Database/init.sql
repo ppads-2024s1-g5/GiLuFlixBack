@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS catalog1.Movie;
+DROP TABLE IF EXISTS catalog1.Review;
 DROP TABLE IF EXISTS catalog1.Book;
 DROP TABLE IF EXISTS catalog1.TvShow;
 DROP TABLE IF EXISTS catalog1.User;
-DROP TABLE IF EXISTS catalog1.Review;
+DROP TABLE IF EXISTS catalog1.Movie;
 
 #TABELA FILME
 
@@ -38,8 +38,12 @@ CREATE TABLE catalog1.Book (
   ,Publisher varchar(50)
 );
 
-INSERT INTO catalog1.Book (Title, Author, Publisher)
-VALUES ("Mito de sisifo", "Albert Camus", "Editora Record");
+INSERT INTO catalog1.Book (Id, Title, Author, Publisher)
+VALUES (1000,"Mito de sisifo", "Albert Camus", "Editora Record"),
+       (1001,"Clean Code", "Uncle Bob", "Editora Record"),
+       (1002,"Mito de sisifo", "Albert Camus", "Editora Record"),
+       (1003,"Mito de sisifo", "Albert Camus", "Editora Record")
+       ;
 
 # TABELA TV SHOW
 
@@ -50,8 +54,9 @@ CREATE TABLE catalog1.TvShow(
   ,Cast varchar(255)
 );
 
-INSERT INTO catalog1.TvShow (Title, Director, Cast)
-VALUES ("Breaking bad","Vince Gilligan", "Aaron Paul, Bryan Cranston");
+INSERT INTO catalog1.TvShow (Id,Title, Director, Cast)
+VALUES (3000, "Breaking bad","Vince Gilligan", "Aaron Paul, Bryan Cranston"),
+        (3001, "The office","...", "Michael Scott, Bryan Ryan");
 
 
 # TABELA USER
@@ -71,6 +76,34 @@ INSERT INTO catalog1.User
 VALUES
 (100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,NULL),
 (101, "Lucas G", 21, "admin", "admin","user",false,NULL);
+(102, "Vitor", 29, "vitor@gmail", "123","user",true,NULL),
+(103, "Arthur", 30, "arthur@gmail.com", "123","user",false,NULL);
+
+# TABELA AMIZADE E PEDIDOS DE AMIZADE
+CREATE TABLE catalog1.Friendships (
+    FriendshipId INT PRIMARY KEY AUTO_INCREMENT,
+    UserId1 INT,
+    UserId2 INT,
+    FOREIGN KEY (UserId1) REFERENCES User(Id),
+    FOREIGN KEY (UserId2) REFERENCES User(Id),
+    UNIQUE KEY (UserId1, UserId2)
+);
+
+CREATE TABLE catalog1.FriendshipRequests (
+    RequestId INT PRIMARY KEY AUTO_INCREMENT,
+    RequesterId INT,
+    RecipientId INT,
+    FOREIGN KEY (RequesterId) REFERENCES User(Id),
+    FOREIGN KEY (RecipientId) REFERENCES User(Id)
+);
+
+CREATE VIEW catalog1.AllItems AS 
+SELECT Id FROM catalog1.Book
+UNION ALL 
+SELECT Id FROM catalog1.Movie
+UNION ALL 
+SELECT Id FROM catalog1.TvShow;
+
 
 # TABELA REVIEW 
 
@@ -80,17 +113,15 @@ CREATE TABLE catalog1.Review (
   ,ItemId INT NOT NULL
   ,Rating INT NOT NULL
   ,ReviewText VARCHAR(255)
+  ,Likes INT
   ,DatetimeReview TIMESTAMP
   ,CONSTRAINT FK_UserID FOREIGN KEY (userId)
     REFERENCES User(Id)
-  ,CONSTRAINT FK_MovieID FOREIGN KEY (itemId)
-    REFERENCES Movie(Id)
 );
 
-
-INSERT INTO catalog1.Review
+INSERT INTO catalog1.Review 
 VALUES 
-(10000, 101, 1,3,"Filme excelente", CURRENT_TIMESTAMP),
-(10001, 100, 1,3,"Filme muito legal", CURRENT_TIMESTAMP),
-(10002, 101, 2,1,"Filme fraco", CURRENT_TIMESTAMP);
+(10000, 101, 1,3,"Filme excelente", 0, CURRENT_TIMESTAMP),
+(10001, 100, 1,3,"Filme muito legal", 0, CURRENT_TIMESTAMP),
+(10002, 101, 2,1,"Filme fraco", 10, CURRENT_TIMESTAMP);
 

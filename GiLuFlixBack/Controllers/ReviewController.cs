@@ -8,6 +8,7 @@ using GiLuFlixBack.Repository;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using GiLuFlixBack.Models;
+using GiLuFlixBack.Models.ReviewDTO;
 using GiLuFlixBack.Data;
 using System;
 
@@ -31,7 +32,7 @@ namespace GiLuFlixBack.Controllers;
         //AVALIAR O FILME
         [HttpPost, ActionName("RateMovie")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RateMovie([FromForm] Review review)
+        public async Task<IActionResult> RateMovie([FromForm] ReviewForm review)
         {
             //retrieving user data
             var claimsPrincipal = HttpContext.User;
@@ -49,7 +50,7 @@ namespace GiLuFlixBack.Controllers;
 
             if (UserId != null)
             {
-                Console.WriteLine("CHAMANDO O METODO POST REVIEW");
+                Console.WriteLine("CHAMANDO O METODO Pstring UserIdOST REVIEW");
                 _reviewRepository.PostReview(review, UserId);
             }
             else

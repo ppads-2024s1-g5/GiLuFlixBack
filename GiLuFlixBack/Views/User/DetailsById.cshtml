@@ -1,0 +1,58 @@
+@model GiLuFlixBack.Models.User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<div>
+    <h4>Filme</h4>
+    <hr />
+    <dl class="d-flex justify-content-between">
+        <div class="row" >    
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+        </div>
+            <form asp-action="requestFriendship" asp-controller="User" method="post">
+                <input type="hidden" name="requesterId" value="101" />
+                <input type="hidden" name="requestedId" value="100" />
+                <button type="submit" class="btn btn-outline-secondary btn-sm" style="width:90%;">
+                    Enviar solicitação de amizade
+                </button>
+            </form>
+        </dl>
+        </div>
+        <div class="d-flex w-50 mt-5"> 
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Friends)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Friends)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Reviews)
+            </dt>
+            <div class="d-flex">
+                <div style="width:250px;">
+                <p>Comentários:</p>
+                    @foreach (var review in Model.Reviews) {
+                        <p>@review.ItemId - @review.DatetimeReview</p>
+                        <p>Olá</p>
+                        <p>Nota: @review.Rating</p>
+                        <p>@review.ReviewText</p>
+                        <hr/>
+                    }
+                </div>
+                
+            </div>
+        </div>
