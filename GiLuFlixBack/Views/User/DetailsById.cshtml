@@ -50,6 +50,13 @@
                     <b><p>Lista de pedidos de amizade:</p></b>
                     @foreach (var friend in Model.FriendshipRequests) {
                         <p>@friend.Name - @friend.Email</p>
+                        <form asp-action="acceptFriendship" asp-controller="User" method="post">
+                            <input type="hidden" name="requesterId" value="100" />
+                            <input type="hidden" name="requestedId" value="101" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm" style="width:90%;">
+                                Aceitar solicitação de amizade
+                            </button>
+                        </form>
                         <hr/>
                     }
             </div>

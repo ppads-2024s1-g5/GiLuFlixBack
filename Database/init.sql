@@ -3,6 +3,9 @@ DROP TABLE IF EXISTS catalog1.Book;
 DROP TABLE IF EXISTS catalog1.TvShow;
 DROP TABLE IF EXISTS catalog1.User;
 DROP TABLE IF EXISTS catalog1.Movie;
+DROP TABLE IF EXISTS catalog1.FriendshipRequests;
+DROP TABLE IF EXISTS catalog1.Friendships;
+
 
 #TABELA FILME
 
@@ -75,7 +78,7 @@ CREATE TABLE catalog1.User(
 INSERT INTO catalog1.User
 VALUES
 (100, "giovanna G Micher", 21, "giovanna@gmail", "euamoolucas","user",true,NULL),
-(101, "Lucas G", 21, "admin", "admin","user",false,NULL);
+(101, "Lucas G", 21, "admin", "admin","user",false,NULL),
 (102, "Vitor", 29, "vitor@gmail", "123","user",true,NULL),
 (103, "Arthur", 30, "arthur@gmail.com", "123","user",false,NULL);
 
@@ -100,7 +103,11 @@ CREATE TABLE catalog1.FriendshipRequests (
     FOREIGN KEY (RecipientId) REFERENCES User(Id)
 );
 
-CREATE VIEW catalog1.AllItems AS 
+INSERT INTO catalog1.FriendshipRequests (RequesterId, RecipientId)
+VALUES (103,100),(103,101);
+
+
+CREATE OR REPLACE VIEW catalog1.AllItems AS 
 SELECT Id FROM catalog1.Book
 UNION ALL 
 SELECT Id FROM catalog1.Movie
