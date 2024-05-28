@@ -48,7 +48,6 @@ namespace GiLuFlixBack.Controllers
             }
 
             var reviews = await _reviewRepository.GetAllItemReviews(id.Value);
-            
             tvShow.Reviews = reviews;
 
             return View(tvShow);

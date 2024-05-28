@@ -15,7 +15,6 @@ namespace GiLuFlixBack.Repository
     {
         private readonly IDbConnection _dbConnection;
 
-
         public ReviewRepository(IConfiguration configuration)
         {
             _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
@@ -54,12 +53,30 @@ namespace GiLuFlixBack.Repository
             return reviews.ToList();
         }
 
+        public async Task<ICollection<ReviewResponse>> GetAllUserReviews(int UserId)
+        {
+            _dbConnection.Open();
+
+            var parameters = new { UserId = UserId };
+
+            string query = @"SELECT ReviewId, UserId, Name, ItemId, Rating, ReviewText, Likes, DatetimeReview FROM catalog1.Review A LEFT JOIN catalog1.User ON UserId = Id
+                             WHERE UserId = @UserId;";
+            var reviews = await _dbConnection.QueryAsync<ReviewResponse>(query, parameters);
+            foreach (var item in reviews)
+            {
+                Console.WriteLine(item);
+            }          
+
+            _dbConnection.Close();
+            return reviews.ToList();
+        }
+
         public async Task<int> LikeComment(int id)
         {
             _dbConnection.Open();
 
             var parameters = new { ItemId = id };
-            string query = @"UPDATE catalog1.Review SET likes = likes + 1 WHERE ItemId = @ItemId;";
+            string query = @"UPDATE catalog1.Review SET Likes = Likes + 1 WHERE ReviewId = @ItemId;";
             var rowsAffected = await _dbConnection.ExecuteAsync(query, parameters);
 
             _dbConnection.Close();

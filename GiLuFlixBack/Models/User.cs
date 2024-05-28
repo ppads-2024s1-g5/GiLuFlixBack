@@ -31,17 +31,11 @@ namespace GiLuFlixBack.Models
         public string? ReturnUrl { get; set; }
 
 
-        public List<User> Friends { get; set; }
+        public ICollection<User> Friends { get; set; }
 
-        public List<User> FriendshipRequests { get; set; }
+        public ICollection<User> FriendshipRequests { get; set; }
 
         public ICollection<ReviewResponse> Reviews { get; set; }
-
-        //different way to write the get method :)
-        // public int Id
-        // {
-        //     get => _id;
-        // }
 
         public bool isPasswordCorrect (string password)
         {

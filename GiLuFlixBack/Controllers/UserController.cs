@@ -79,13 +79,13 @@ public class UserController : Controller
     }
 
 
-
+    [HttpGet]
     public async Task<IActionResult> Dashboard()
     {
         return View();
     }
 
-
+    [HttpGet]
     public async Task<IActionResult> DetailsById(int id)
     {
         if (id == null)
@@ -99,19 +99,21 @@ public class UserController : Controller
             return NotFound();
         }
 
-        var reviews = await _reviewRepository.GetAllItemReviews(id);
-        
+        var reviews = await _reviewRepository.GetAllUserReviews(id);
         user.Reviews = reviews;
 
         return View(user);
     }
 
-    public async Task<IActionResult> requestFriendship(int requesterId, int requestedId)
+    [HttpPost]
+    public async Task<IActionResult> requestFriendship([FromForm] int requesterId, int requestedId)
     {
+        Console.WriteLine("INFO recebida", requesterId, requestedId);
         try
         {   
             _userRepository.requestFriendship(requesterId,requestedId);
-            return RedirectToAction("Index", "Home");
+            ViewBag.SuccessMessage = "Requisição enviada!";
+            return RedirectToAction("DetailsById","User", new { id = requestedId });
         }
         catch (InvalidOperationException ex)
         {

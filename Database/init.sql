@@ -38,11 +38,11 @@ CREATE TABLE catalog1.Book (
   ,Publisher varchar(50)
 );
 
-INSERT INTO catalog1.Book (Title, Author, Publisher)
-VALUES ("Mito de sisifo", "Albert Camus", "Editora Record"),
-       ("Clean Code", "Uncle Bob", "Editora Record"),
-       ("Mito de sisifo", "Albert Camus", "Editora Record"),
-       ("Mito de sisifo", "Albert Camus", "Editora Record")
+INSERT INTO catalog1.Book (Id, Title, Author, Publisher)
+VALUES (1000,"Mito de sisifo", "Albert Camus", "Editora Record"),
+       (1001,"Clean Code", "Uncle Bob", "Editora Record"),
+       (1002,"Mito de sisifo", "Albert Camus", "Editora Record"),
+       (1003,"Mito de sisifo", "Albert Camus", "Editora Record")
        ;
 
 # TABELA TV SHOW
@@ -54,8 +54,9 @@ CREATE TABLE catalog1.TvShow(
   ,Cast varchar(255)
 );
 
-INSERT INTO catalog1.TvShow (Title, Director, Cast)
-VALUES ("Breaking bad","Vince Gilligan", "Aaron Paul, Bryan Cranston");
+INSERT INTO catalog1.TvShow (Id,Title, Director, Cast)
+VALUES (3000, "Breaking bad","Vince Gilligan", "Aaron Paul, Bryan Cranston"),
+        (3001, "The office","...", "Michael Scott, Bryan Ryan");
 
 
 # TABELA USER
@@ -79,29 +80,29 @@ VALUES
 (103, "Arthur", 30, "arthur@gmail.com", "123","user",false,NULL);
 
 # TABELA AMIZADE E PEDIDOS DE AMIZADE
-CREATE TABLE Friendships (
+CREATE TABLE catalog1.Friendships (
     FriendshipId INT PRIMARY KEY AUTO_INCREMENT,
     UserId1 INT,
     UserId2 INT,
-    FOREIGN KEY (UserId1) REFERENCES Users(UserId),
-    FOREIGN KEY (UserId2) REFERENCES Users(UserId),
+    FOREIGN KEY (UserId1) REFERENCES User(Id),
+    FOREIGN KEY (UserId2) REFERENCES User(Id),
     UNIQUE KEY (UserId1, UserId2)
 );
 
-CREATE TABLE FriendshipRequests (
+CREATE TABLE catalog1.FriendshipRequests (
     RequestId INT PRIMARY KEY AUTO_INCREMENT,
     RequesterId INT,
     RecipientId INT,
-    FOREIGN KEY (RequesterId) REFERENCES Users(UserId),
-    FOREIGN KEY (RecipientId) REFERENCES Users(UserId)
+    FOREIGN KEY (RequesterId) REFERENCES User(Id),
+    FOREIGN KEY (RecipientId) REFERENCES User(Id)
 );
 
-
-
-
-
-
-
+CREATE VIEW catalog1.AllItems AS 
+SELECT Id FROM catalog1.Book
+UNION ALL 
+SELECT Id FROM catalog1.Movie
+UNION ALL 
+SELECT Id FROM catalog1.TvShow;
 
 
 # TABELA REVIEW 
@@ -116,10 +117,7 @@ CREATE TABLE catalog1.Review (
   ,DatetimeReview TIMESTAMP
   ,CONSTRAINT FK_UserID FOREIGN KEY (userId)
     REFERENCES User(Id)
-  ,CONSTRAINT FK_MovieID FOREIGN KEY (itemId)
-    REFERENCES Movie(Id)
 );
-
 
 INSERT INTO catalog1.Review 
 VALUES 

@@ -5,7 +5,6 @@
 }
 
 <h1>Details</h1>
-
 <div>
     <h4>Filme</h4>
     <hr />
@@ -24,15 +23,15 @@
                 @Html.DisplayFor(model => model.Name)
             </dd>
         </div>
-        <div>
-            <button id="btnEnviarSolicitacao" type="button" class="btn btn-outline-secondary btn-sm" style="width:90%;">
-                Enviar solicitação de amizade
-            </button>
-        </div>
-
+            <form asp-action="requestFriendship" asp-controller="User" method="post">
+                <input type="hidden" name="requesterId" value="101" />
+                <input type="hidden" name="requestedId" value="100" />
+                <button type="submit" class="btn btn-outline-secondary btn-sm" style="width:90%;">
+                    Enviar solicitação de amizade
+                </button>
+            </form>
         </dl>
         </div>
-
         <div class="d-flex w-50 mt-5"> 
             <dt class = "col-sm-2">
                 @Html.DisplayNameFor(model => model.Friends)
@@ -43,30 +42,17 @@
             <dt class = "col-sm-2">
                 @Html.DisplayNameFor(model => model.Reviews)
             </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => model.Reviews)
-            </dd>
+            <div class="d-flex">
+                <div style="width:250px;">
+                <p>Comentários:</p>
+                    @foreach (var review in Model.Reviews) {
+                        <p>@review.ItemId - @review.DatetimeReview</p>
+                        <p>Olá</p>
+                        <p>Nota: @review.Rating</p>
+                        <p>@review.ReviewText</p>
+                        <hr/>
+                    }
+                </div>
+                
+            </div>
         </div>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            // Captura o clique do botão e envia a solicitação de amizade
-            $("#btnEnviarSolicitacao").click(function () {
-                var solicitanteId = @Model.Id; // ID do usuário logado
-                var destinatarioId = @Model.Id; // ID do usuário exibido na página (o mesmo no caso de ser o próprio usuário)
-
-                // Envie a solicitação de amizade via AJAX
-                $.post("/User/SolicitarAmizade", { solicitanteId: solicitanteId, destinatarioId: destinatarioId })
-                    .done(function (data) {
-                        // A solicitação foi enviada com sucesso, você pode fazer algo aqui, como mostrar uma mensagem de sucesso
-                        alert("Solicitação de amizade enviada com sucesso!");
-                    })
-                    .fail(function (error) {
-                        // Se houver um erro ao enviar a solicitação, mostre uma mensagem de erro
-                        alert("Erro ao enviar solicitação de amizade: " + error.responseText);
-                    });
-            });
-        });
-    </script>
-}

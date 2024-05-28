@@ -48,11 +48,13 @@ namespace GiLuFlixBack.Controllers
             }
             
             var reviews = await _reviewRepository.GetAllItemReviews(id.Value);
-            
+            foreach(var item in reviews)
+            {
+                Console.WriteLine(item);
+            }
             book.Reviews = reviews;
 
             ViewBag.BookId = id; 
-
             return View(book);
         }
 

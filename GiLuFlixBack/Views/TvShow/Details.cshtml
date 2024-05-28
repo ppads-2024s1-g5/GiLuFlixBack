@@ -41,7 +41,7 @@
     <div class="form-group">
         <label for="ReviewText">Comentário</label>
         <textarea id="ReviewText" class="form-control" name="ReviewText" rows="5"></textarea>
-        <div class="d-flex">
+       <div class="d-flex justify-content-between">
             <label for="Rating">Rating</label>
             <input type="radio" id="rating1" name="Rating" value="1">
             <label for="Rating">1</label><br>
@@ -49,10 +49,24 @@
             <label for="Rating">2</label><br>
             <input type="radio" id="rating3" name="Rating" value="3">
             <label for="Rating">3</label>
+            <input type="radio" id="rating4" name="Rating" value="4">
+            <label for="Rating">4</label>
+            <input type="radio" id="rating5" name="Rating" value="5">
+            <label for="Rating">5</label>
+            <input type="radio" id="rating6" name="Rating" value="6">
+            <label for="Rating">6</label>
+            <input type="radio" id="rating7" name="Rating" value="7">
+            <label for="Rating">7</label>
+            <input type="radio" id="rating8" name="Rating" value="8">
+            <label for="Rating">8</label>
+            <input type="radio" id="rating9" name="Rating" value="9">
+            <label for="Rating">9</label>
+            <input type="radio" id="rating10" name="Rating" value="10">
+            <label for="Rating">10</label>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
-    <input type="hidden" id="MovieId" name="ItemId" value="@ViewBag.MovieId" />
+    <input type="hidden" id="TvShowId" name="ItemId" value="@Model.Id" />
     <input type="hidden" id="MovieId" name="UserId" value="@ViewBag.UserId" />
 </form>
 </div>

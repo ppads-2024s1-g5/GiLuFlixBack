@@ -2,6 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using GiLuFlixBack.Models;
+using GiLuFlixBack.Models.ReviewDTO;
 using GiLuFlixBack.Data;
 using MySqlConnector;
 using System.Data;
@@ -12,10 +13,7 @@ namespace GiLuFlixBack.Repository
 {
     public class UserRepository : IUserRepository
     {
-        //private static readonly Lazy<UserRepository> _instance = new Lazy<UserRepository>(() => new UserRepository());
-        //private readonly IConfiguration _configuration;
         private readonly IDbConnection _dbConnection;
-
 
         public UserRepository(IConfiguration configuration)
         {
@@ -28,7 +26,6 @@ namespace GiLuFlixBack.Repository
             _dbConnection?.Open();
 
             string query = @"SELECT * FROM catalog1.User WHERE email = @email;";
-            //query and return just a single row
             var user = await _dbConnection.QuerySingleAsync<User>(query, new { email = email });
             return user;
             
@@ -51,15 +48,33 @@ namespace GiLuFlixBack.Repository
 
         }
 
+        public async Task<ICollection<ReviewResponse>> GetAllUserReviews(int Id)
+        {
+            var parameters = new { UserId = Id };            
+            string query = @"SELECT ReviewId, UserId, Name, ItemId, Rating, ReviewText, Likes, DatetimeReview FROM catalog1.Review A LEFT JOIN catalog1.User ON UserId = Id
+                             WHERE UserId = @UserId;";
+            var reviews = await _dbConnection.QueryAsync<ReviewResponse>(query, parameters);
+            return reviews.ToList();
+        }
+
         public async Task<User> GetUserById(int Id)
         {
 
             var parameters = new { UserId = Id };            
-            string query = @"SELECT * FROM catalog1.User
-                            WHERE Id = @UserId;";
-            
+            string query = @"SELECT * FROM catalog1.User A WHERE Id = @UserId;";
             User user = await _dbConnection.QuerySingleAsync<User>(query, parameters);
-            Console.WriteLine($"{user} returned.");
+
+            user.Reviews = await GetAllUserReviews(Id);
+            user.FriendshipRequests = await GetFriendshipRequests(Id);
+            user.Friends = await GetFriends(Id);
+
+            Console.WriteLine($"{user.Name} returned.");
+            Console.WriteLine($"{user.Friends} - friends list.");
+            foreach(var item in user.Reviews)
+            {
+                Console.WriteLine($"{item.ReviewText} returned.");
+                Console.WriteLine($"{item.DatetimeReview} returned.");
+            }
             _dbConnection?.Close();
             return user;
         }
@@ -67,12 +82,33 @@ namespace GiLuFlixBack.Repository
         public async Task<int> requestFriendship(int requesterId,int requestedId )
         {
             int rowsAffected =  await _dbConnection.ExecuteAsync(
-                "INSERT INTO FriendshipRequests (RequesterId, RecipientId) VALUES (@SolicitanteId, @DestinatarioId)",
+                @"INSERT INTO catalog1.FriendshipRequests (RequesterId, RecipientId) VALUES (@SolicitanteId, @DestinatarioId);",
                 new { SolicitanteId = requesterId, DestinatarioId = requestedId }
             );
 
             return rowsAffected;
         }
 
+        public async Task<ICollection<User>> GetFriendshipRequests(int requesterId)
+        {
+            IEnumerable<User> usersEnumerable = await _dbConnection.QueryAsync<User>(
+                @"SELECT * FROM catalog1.FriendshipRequests WHERE RequesterId = @requesterId;",
+                new { requesterId = requesterId }
+            );
+            ICollection<User> usersCollection = usersEnumerable.ToList();
+
+            return usersCollection;
+        }
+
+        public async Task<ICollection<User>> GetFriends(int requesterId)
+        {
+            IEnumerable<User> usersEnumerable = await _dbConnection.QueryAsync<User>(
+                @"SELECT * FROM  catalog1.Friendships WHERE @requesterId = UserId1;",
+                new { requesterId = requesterId }
+            );
+            ICollection<User> usersCollection = usersEnumerable.ToList();
+
+            return usersCollection;
+        }
     }
 }

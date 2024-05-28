@@ -7,6 +7,8 @@ namespace GiLuFlixBack.Repository
         Task<int> PostReview(ReviewForm review, string userId);
 
         Task<ICollection<ReviewResponse>> GetAllItemReviews(int ItemId);
+        
+        Task<ICollection<ReviewResponse>> GetAllUserReviews(int UserId);
 
         Task<int> LikeComment(int id);
     
