@@ -11,5 +11,7 @@ namespace GiLuFlixBack.Repository
 
         Task<int> requestFriendship(int requesterId,int requestedId );
 
+        Task<ICollection<User>> GetFriends(int requesterId);
+
     }
 }
