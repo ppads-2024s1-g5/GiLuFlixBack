@@ -98,7 +98,7 @@ public class UserController : Controller
         {
             return NotFound();
         }
-        
+
         return View(user);
     }
 
@@ -109,6 +109,23 @@ public class UserController : Controller
         try
         {   
             _userRepository.requestFriendship(requesterId,requestedId);
+            ViewBag.SuccessMessage = "Requisição enviada!";
+            return RedirectToAction("DetailsById","User", new { id = requestedId });
+        }
+        catch (InvalidOperationException ex)
+        {
+            ViewBag.ErrorMessage = ex.Message;
+            return View();
+        }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> acceptFriendship([FromForm] int requesterId, int requestedId)
+    {
+        Console.WriteLine("INFO recebida", requesterId, requestedId);
+        try
+        {   
+            _userRepository.acceptFriendship(requesterId,requestedId);
             ViewBag.SuccessMessage = "Requisição enviada!";
             return RedirectToAction("DetailsById","User", new { id = requestedId });
         }
