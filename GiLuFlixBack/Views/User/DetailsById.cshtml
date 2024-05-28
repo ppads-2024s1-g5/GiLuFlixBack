@@ -38,6 +38,21 @@
             </dt>
             <dd class = "col-sm-10">
                 @Html.DisplayFor(model => model.Friends)
+                <div style="width:250px;">
+                    <p>Amigos:</p>
+                    @foreach (var friend in Model.Friends) {
+                        <p>@friend.Name - @friend.Email</p>
+                        <hr/>
+                    }
+                </div>
+                @Html.DisplayFor(model => model.FriendshipRequests)
+                <div >
+                    <b><p>Lista de pedidos de amizade:</p></b>
+                    @foreach (var friend in Model.FriendshipRequests) {
+                        <p>@friend.Name - @friend.Email</p>
+                        <hr/>
+                    }
+            </div>
             </dd>
             <dt class = "col-sm-2">
                 @Html.DisplayNameFor(model => model.Reviews)

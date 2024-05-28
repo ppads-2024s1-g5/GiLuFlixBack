@@ -61,11 +61,7 @@ namespace GiLuFlixBack.Repository
 
             string query = @"SELECT ReviewId, UserId, Name, ItemId, Rating, ReviewText, Likes, DatetimeReview FROM catalog1.Review A LEFT JOIN catalog1.User ON UserId = Id
                              WHERE UserId = @UserId;";
-            var reviews = await _dbConnection.QueryAsync<ReviewResponse>(query, parameters);
-            foreach (var item in reviews)
-            {
-                Console.WriteLine(item);
-            }          
+            var reviews = await _dbConnection.QueryAsync<ReviewResponse>(query, parameters);    
 
             _dbConnection.Close();
             return reviews.ToList();

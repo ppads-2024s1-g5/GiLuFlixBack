@@ -98,10 +98,7 @@ public class UserController : Controller
         {
             return NotFound();
         }
-
-        var reviews = await _reviewRepository.GetAllUserReviews(id);
-        user.Reviews = reviews;
-
+        
         return View(user);
     }
 

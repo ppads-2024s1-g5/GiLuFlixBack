@@ -89,6 +89,9 @@ CREATE TABLE catalog1.Friendships (
     UNIQUE KEY (UserId1, UserId2)
 );
 
+INSERT INTO catalog1.Friendships (UserId1, UserId2)
+VALUES (100,101);
+
 CREATE TABLE catalog1.FriendshipRequests (
     RequestId INT PRIMARY KEY AUTO_INCREMENT,
     RequesterId INT,

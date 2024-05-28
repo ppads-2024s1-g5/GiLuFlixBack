@@ -68,12 +68,9 @@ namespace GiLuFlixBack.Repository
             user.FriendshipRequests = await GetFriendshipRequests(Id);
             user.Friends = await GetFriends(Id);
 
-            Console.WriteLine($"{user.Name} returned.");
-            Console.WriteLine($"{user.Friends} - friends list.");
-            foreach(var item in user.Reviews)
+            foreach (var item in user.Friends)
             {
-                Console.WriteLine($"{item.ReviewText} returned.");
-                Console.WriteLine($"{item.DatetimeReview} returned.");
+                Console.WriteLine($"{user.Name} - friend name list.");
             }
             _dbConnection?.Close();
             return user;
@@ -92,7 +89,8 @@ namespace GiLuFlixBack.Repository
         public async Task<ICollection<User>> GetFriendshipRequests(int requesterId)
         {
             IEnumerable<User> usersEnumerable = await _dbConnection.QueryAsync<User>(
-                @"SELECT * FROM catalog1.FriendshipRequests WHERE RequesterId = @requesterId;",
+                @"SELECT * FROM User 
+                WHERE Id IN (SELECT RequesterId FROM catalog1.FriendshipRequests WHERE RecipientId = @requesterId);",
                 new { requesterId = requesterId }
             );
             ICollection<User> usersCollection = usersEnumerable.ToList();
@@ -103,11 +101,13 @@ namespace GiLuFlixBack.Repository
         public async Task<ICollection<User>> GetFriends(int requesterId)
         {
             IEnumerable<User> usersEnumerable = await _dbConnection.QueryAsync<User>(
-                @"SELECT * FROM  catalog1.Friendships WHERE @requesterId = UserId1;",
+                @"SELECT * FROM User 
+                Where Id IN (SELECT UserId2 FROM catalog1.Friendships WHERE @requesterId = UserId1)
+                OR Id IN (SELECT UserId1 FROM catalog1.Friendships WHERE @requesterId = UserId2); ",
                 new { requesterId = requesterId }
             );
             ICollection<User> usersCollection = usersEnumerable.ToList();
-
+            Console.WriteLine(usersEnumerable);
             return usersCollection;
         }
     }
