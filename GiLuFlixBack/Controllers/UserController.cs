@@ -1,15 +1,9 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using GiLuFlixBack.Repository;
-using System.Threading.Tasks;
 using System.Security.Claims;
 using GiLuFlixBack.Models;
-using System.Linq;
-using System;
 
 
 
@@ -17,12 +11,10 @@ namespace GiLuFlixBack.Controllers;
 public class UserController : Controller
 {
     private readonly IUserRepository _userRepository;
-    private readonly IReviewRepository _reviewRepository;
 
-    public UserController(IUserRepository userRepository, IReviewRepository ReviewRepository)
+    public UserController(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _reviewRepository = ReviewRepository;
     }
 
     [HttpGet]
@@ -51,12 +43,16 @@ public class UserController : Controller
         if (userFromDb.isPasswordCorrect(user.Password) == false)
         {
             return ViewBag("Senha incorreta!");
-        }        
+        }
 
+        string role = await _userRepository.GetUserRole(user.Email);
+        Console.WriteLine("ROLE DO USUARIO ENCONTRADO " + role.ToString());
+        
         List<Claim> claims =
         [
             new Claim(ClaimTypes.NameIdentifier, userFromDb.Id.ToString()),
-            new Claim(ClaimTypes.Name, userFromDb.Name)
+            new Claim(ClaimTypes.Name, userFromDb.Name),
+            new Claim(ClaimTypes.Role, role) 
         ];
         var authScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
@@ -75,9 +71,8 @@ public class UserController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
-        return RedirectToRoute("User.Login");
+        return RedirectToAction("Login","User");
     }
-
 
     [HttpGet]
     public async Task<IActionResult> Dashboard()
@@ -103,12 +98,15 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> requestFriendship([FromForm] int requesterId, int requestedId)
+    public async Task<IActionResult> RequestFriendship([FromForm] int requestedId)
     {
-        Console.WriteLine("INFO recebida", requesterId, requestedId);
+        // GET USER ID (logged user)
+        var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        Console.WriteLine("ID USER SESSION" + loggedUserId);
+        
         try
         {   
-            _userRepository.requestFriendship(requesterId,requestedId);
+            var response = await _userRepository.requestFriendship(Convert.ToInt32(loggedUserId),requestedId);
             ViewBag.SuccessMessage = "Requisição enviada!";
             return RedirectToAction("DetailsById","User", new { id = requestedId });
         }
@@ -122,12 +120,12 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> acceptFriendship([FromForm] int requesterId, int requestedId)
     {
-        Console.WriteLine("INFO recebida", requesterId, requestedId);
+        Console.WriteLine("INFO recebida" + requesterId + requestedId);
         try
         {   
             _userRepository.acceptFriendship(requesterId,requestedId);
             ViewBag.SuccessMessage = "Requisição enviada!";
-            return RedirectToAction("DetailsById","User", new { id = requestedId });
+            return RedirectToAction("DetailsById","User", new { id = requesterId });
         }
         catch (InvalidOperationException ex)
         {

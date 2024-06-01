@@ -100,7 +100,8 @@ CREATE TABLE catalog1.FriendshipRequests (
     RequesterId INT,
     RecipientId INT,
     FOREIGN KEY (RequesterId) REFERENCES User(Id),
-    FOREIGN KEY (RecipientId) REFERENCES User(Id)
+    FOREIGN KEY (RecipientId) REFERENCES User(Id),
+    CONSTRAINT UniqueFriendship UNIQUE (RequesterId, RecipientId)
 );
 
 INSERT INTO catalog1.FriendshipRequests (RequesterId, RecipientId)
