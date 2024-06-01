@@ -1,7 +1,11 @@
 @model GiLuFlixBack.Models.User
 
+
+
+
 @{
     ViewData["Title"] = "Details";
+    string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 }
 
 <h1>Details</h1>
@@ -24,7 +28,6 @@
             </dd>
         </div>
             <form asp-action="RequestFriendship" asp-controller="User" method="post">
-                <input type="hidden" name="requesterId" value="101" />
                 <input type="hidden" name="requestedId" value="@Model.Id" />
                 <button type="submit" class="btn btn-outline-secondary btn-sm" style="width:90%;">
                     Enviar solicitação de amizade
@@ -45,20 +48,23 @@
                         <hr/>
                     }
                 </div>
-                @Html.DisplayFor(model => model.FriendshipRequests)
                 <div >
-                    <b><p>Lista de pedidos de amizade:</p></b>
-                    @foreach (var friend in Model.FriendshipRequests) {
-                        <p>@friend.Name - @friend.Email</p>
-                        <form asp-action="acceptFriendship" asp-controller="User" method="post">
-                            <input type="hidden" name="requestedId" value="@friend.Id" />
-                            <button type="submit" class="btn btn-outline-secondary btn-sm" style="width:90%;">
-                                Aceitar solicitação de amizade
-                            </button>
-                        </form>
-                        <hr/>
-                    }
-            </div>
+            @if (@userId == Model.Id.ToString())
+            {
+                        <p>Lista de pedidos de amizade:</p>
+                        
+                        @foreach (var friend in Model.FriendshipRequests) {
+                            <p>@friend.Name - @friend.Email</p>
+                            <form asp-action="acceptFriendship" asp-controller="User" method="post">
+                                <input type="hidden" name="requesterId" value="@friend.Id" />
+                                <button type="submit" class="btn btn-outline-secondary btn-sm" style="width:90%;">
+                            Aceitar solicitação de amizade - @friend.Id
+                                </button>
+                            </form>
+                            <hr/>
+                        }
+                }
+                </div>
             </dd>
             <dt class = "col-sm-2">
                 @Html.DisplayNameFor(model => model.Reviews)

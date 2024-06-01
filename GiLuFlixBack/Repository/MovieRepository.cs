@@ -20,7 +20,6 @@ namespace GiLuFlixBack.Repository
         {
             _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
-
         public async Task<int> GetReviews(string UserId)
         {
             _dbConnection?.Open();

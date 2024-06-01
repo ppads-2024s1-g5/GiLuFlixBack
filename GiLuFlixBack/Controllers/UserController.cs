@@ -103,6 +103,7 @@ public class UserController : Controller
         // GET USER ID (logged user)
         var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         Console.WriteLine("ID USER SESSION" + loggedUserId);
+        Console.WriteLine("ID RECEBIDO DO FORM "+ requestedId);
         
         try
         {   
@@ -118,14 +119,18 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> acceptFriendship([FromForm] int requesterId, int requestedId)
+    public async Task<IActionResult> acceptFriendship([FromForm] int requesterId)
+
     {
-        Console.WriteLine("INFO recebida" + requesterId + requestedId);
+
+        var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        Console.WriteLine("INFO recebida" + requesterId + loggedUserId);
         try
         {   
-            _userRepository.acceptFriendship(requesterId,requestedId);
+            _userRepository.acceptFriendship(requesterId,Convert.ToInt32(loggedUserId));
             ViewBag.SuccessMessage = "Requisição enviada!";
-            return RedirectToAction("DetailsById","User", new { id = requesterId });
+            return RedirectToAction("DetailsById","User", new { id = loggedUserId });
         }
         catch (InvalidOperationException ex)
         {

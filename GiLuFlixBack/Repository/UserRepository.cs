@@ -86,16 +86,16 @@ namespace GiLuFlixBack.Repository
         public async Task<int> requestFriendship(int requesterId,int requestedId )
         {
             // Verificar se a amizade já existe na tabela
-            bool friendshipExists = await _dbConnection.ExecuteScalarAsync<bool>(
-                @"SELECT COUNT(*) FROM catalog1.FriendshipRequests 
-                      WHERE (RequesterId = @RequesterId AND RecipientId = @RecipientId)
-                      OR (RequesterId = @RecipientId AND RecipientId = @RequesterId)",
-                new { RequesterId = requesterId, RecipientId = requestedId }
-            );
-            if (friendshipExists)
-            {
-                return -1;
-            }
+            // bool friendshipExists = await _dbConnection.ExecuteScalarAsync<bool>(
+            //     @"SELECT COUNT(*) FROM catalog1.FriendshipRequests 
+            //           WHERE (RequesterId = @RequesterId AND RecipientId = @RecipientId)
+            //           OR (RequesterId = @RecipientId AND RecipientId = @RequesterId)",
+            //     new { RequesterId = requesterId, RecipientId = requestedId }
+            // );
+            // if (friendshipExists)
+            // {
+            //     return -1;
+            // }
             int rowsAffected =  await _dbConnection.ExecuteAsync(
                 @"INSERT INTO catalog1.FriendshipRequests (RequesterId, RecipientId) VALUES (@SolicitanteId, @DestinatarioId);",
                 new { SolicitanteId = requesterId, DestinatarioId = requestedId }
@@ -109,7 +109,7 @@ namespace GiLuFlixBack.Repository
             int rowsAffected =  await _dbConnection.ExecuteAsync(
                 @"INSERT INTO catalog1.Friendships (UserId1, UserId2) VALUES (@user1, @user2);
                   DELETE FROM catalog1.FriendshipRequests 
-                  WHERE (RequesterId = @user1 and RecipientId = @user2) OR (RequesterId = @user2 and RecipientId = @user1) "
+                  WHERE (RequesterId = @user1 and RecipientId = @user2) OR (RequesterId = @user2 and RecipientId = @user1); "
             );
             Console.WriteLine("LINHAS AFETADAS" + rowsAffected);
             return rowsAffected;
