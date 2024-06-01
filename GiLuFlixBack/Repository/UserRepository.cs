@@ -20,17 +20,25 @@ namespace GiLuFlixBack.Repository
             _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
+        public async Task<string> GetUserRole(string email)
+        {
+            _dbConnection?.Open();
+            string query = @"SELECT UserRole FROM catalog1.User WHERE email = @email;";
+            string role = await _dbConnection.QuerySingleAsync<string>(query, new { email = email });
+            _dbConnection?.Close();
+            return role;
+        }
         public async Task<User> SearchByEmail(string email)
         {
-
             _dbConnection?.Open();
 
             string query = @"SELECT * FROM catalog1.User WHERE email = @email;";
             var user = await _dbConnection.QuerySingleAsync<User>(query, new { email = email });
-            return user;
-            
+            Console.WriteLine(user.RememberMe);
+            Console.WriteLine(user.Role);
+            Console.WriteLine(user.Name);
             _dbConnection?.Close();
-
+            return user;
         }
 
         public async Task<int> Create(string name, string email, string password)
@@ -47,7 +55,6 @@ namespace GiLuFlixBack.Repository
             _dbConnection?.Close();
 
         }
-
         public async Task<ICollection<ReviewResponse>> GetAllUserReviews(int Id)
         {
             var parameters = new { UserId = Id };            
@@ -56,21 +63,21 @@ namespace GiLuFlixBack.Repository
             var reviews = await _dbConnection.QueryAsync<ReviewResponse>(query, parameters);
             return reviews.ToList();
         }
-
+        
         public async Task<User> GetUserById(int Id)
         {
 
             var parameters = new { UserId = Id };            
             string query = @"SELECT * FROM catalog1.User A WHERE Id = @UserId;";
             User user = await _dbConnection.QuerySingleAsync<User>(query, parameters);
-
+            
             user.Reviews = await GetAllUserReviews(Id);
             user.FriendshipRequests = await GetFriendshipRequests(Id);
             user.Friends = await GetFriends(Id);
 
             foreach (var item in user.Friends)
             {
-                Console.WriteLine($"{user.Name} - friend name list.");
+                Console.WriteLine($"{item.Name} - friend name list.");
             }
             _dbConnection?.Close();
             return user;
@@ -78,6 +85,17 @@ namespace GiLuFlixBack.Repository
 
         public async Task<int> requestFriendship(int requesterId,int requestedId )
         {
+            // Verificar se a amizade já existe na tabela
+            bool friendshipExists = await _dbConnection.ExecuteScalarAsync<bool>(
+                @"SELECT COUNT(*) FROM catalog1.FriendshipRequests 
+                      WHERE (RequesterId = @RequesterId AND RecipientId = @RecipientId)
+                      OR (RequesterId = @RecipientId AND RecipientId = @RequesterId)",
+                new { RequesterId = requesterId, RecipientId = requestedId }
+            );
+            if (friendshipExists)
+            {
+                return -1;
+            }
             int rowsAffected =  await _dbConnection.ExecuteAsync(
                 @"INSERT INTO catalog1.FriendshipRequests (RequesterId, RecipientId) VALUES (@SolicitanteId, @DestinatarioId);",
                 new { SolicitanteId = requesterId, DestinatarioId = requestedId }
@@ -91,11 +109,9 @@ namespace GiLuFlixBack.Repository
             int rowsAffected =  await _dbConnection.ExecuteAsync(
                 @"INSERT INTO catalog1.Friendships (UserId1, UserId2) VALUES (@user1, @user2);
                   DELETE FROM catalog1.FriendshipRequests 
-                  WHERE RequesterId = @user1 and RequestedId = @user2 OR RequesterId = @user2 and RequestedId = @user1 ",
-
-                new { user1 = user1, user2 = user2 }
+                  WHERE (RequesterId = @user1 and RecipientId = @user2) OR (RequesterId = @user2 and RecipientId = @user1) "
             );
-
+            Console.WriteLine("LINHAS AFETADAS" + rowsAffected);
             return rowsAffected;
         }
 

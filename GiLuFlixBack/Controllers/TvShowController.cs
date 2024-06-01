@@ -1,14 +1,9 @@
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using GiLuFlixBack.Repository;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
-using System.Linq;
-using System;
 
 namespace GiLuFlixBack.Controllers
 {
@@ -116,10 +111,6 @@ namespace GiLuFlixBack.Controllers
                     if (!TvShowExists(tvShow.Id))
                     {
                         return NotFound();
-                    }
-                    else
-                    {
-                        throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));

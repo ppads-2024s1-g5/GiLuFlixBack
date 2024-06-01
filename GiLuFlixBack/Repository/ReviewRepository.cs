@@ -1,12 +1,7 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using GiLuFlixBack.Models.ReviewDTO;
-using GiLuFlixBack.Data;
 using MySqlConnector;
 using System.Data;
 using Dapper;
-using System;
 
 
 namespace GiLuFlixBack.Repository
@@ -20,44 +15,41 @@ namespace GiLuFlixBack.Repository
             _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
 
-        public async Task<int> PostReview(ReviewForm review, string UserId)
+        public async Task<int> PostReview(ReviewForm review, string userId)
         {
             _dbConnection?.Open();
 
-            var parameters = new { UserId = UserId, ItemId = review.ItemId, Rating = review.Rating, ReviewText = review.ReviewText };
-            Console.WriteLine(parameters);
+            var parameters = new { UserId = userId, ItemId = review.ItemId, Rating = review.Rating, ReviewText = review.ReviewText };
             string query = @"INSERT INTO catalog1.Review (UserId, ItemId, Rating, ReviewText, DatetimeReview)
                              VALUES (@UserId, @ItemId, @Rating, @ReviewText, current_timestamp); ";
-
-            Console.WriteLine("EXECUTANDO A QUERY\n" + query);                  
+            
             var rowsAffected = await _dbConnection.ExecuteAsync(query, parameters);
             Console.WriteLine($"{rowsAffected} row(s) inserted.");
-            return rowsAffected;        
+            
+            return rowsAffected;
         }
+        
 
-        public async Task<ICollection<ReviewResponse>> GetAllItemReviews(int ItemId)
+        public async Task<ICollection<ReviewResponse>> GetAllItemReviews(int itemId)
         {
             _dbConnection.Open();
 
-            var parameters = new { ItemId = ItemId };
+            var parameters = new { ItemId = itemId };
 
             string query = @"SELECT ReviewId, UserId, Name, ItemId, Rating, ReviewText, Likes, DatetimeReview FROM catalog1.Review A LEFT JOIN catalog1.User ON UserId = Id
                              WHERE ItemId = @ItemId;";
             var reviews = await _dbConnection.QueryAsync<ReviewResponse>(query, parameters);
-            foreach (var item in reviews)
-            {
-                Console.WriteLine(item);
-            }          
+            var reviewResponses = reviews as ReviewResponse[] ?? reviews.ToArray();
 
             _dbConnection.Close();
-            return reviews.ToList();
+            return reviewResponses.ToList();
         }
 
-        public async Task<ICollection<ReviewResponse>> GetAllUserReviews(int UserId)
+        public async Task<ICollection<ReviewResponse>> GetAllUserReviews(int userId)
         {
             _dbConnection.Open();
 
-            var parameters = new { UserId = UserId };
+            var parameters = new { UserId = userId };
 
             string query = @"SELECT ReviewId, UserId, Name, ItemId, Rating, ReviewText, Likes, DatetimeReview FROM catalog1.Review A LEFT JOIN catalog1.User ON UserId = Id
                              WHERE UserId = @UserId;";

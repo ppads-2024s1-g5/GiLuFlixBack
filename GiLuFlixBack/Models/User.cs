@@ -23,20 +23,17 @@ namespace GiLuFlixBack.Models
         [Required]
         public string Password { get; set; }
 
-        [Column("userRole")]
-        private string? _role { get; set; }
-        
+        [Column("UserRole")]
+        public string Role; 
         public bool RememberMe { get; set; } = false;
 
         public string? ReturnUrl { get; set; }
-
-
         public ICollection<User> Friends { get; set; }
 
         public ICollection<User> FriendshipRequests { get; set; }
 
         public ICollection<ReviewResponse> Reviews { get; set; }
-
+        
         public bool isPasswordCorrect (string password)
         {
             return password == this.Password;
@@ -50,8 +47,17 @@ namespace GiLuFlixBack.Models
                 FriendshipRequests.Remove(user);
             }
         }
+        
+        public User (){}
 
-        public User() { }
-
+        public User( int Id, string Name,int Age,string Email,string Role,bool RememberMe)
+        {
+            this.Id = Id;
+            this.Name = Name;
+            this.Age = Age;
+            this.Role = Role;
+            this.Email = Email;
+            this.RememberMe = RememberMe;
+        }
     }
 }

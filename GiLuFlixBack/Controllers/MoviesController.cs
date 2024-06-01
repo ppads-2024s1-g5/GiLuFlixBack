@@ -1,14 +1,9 @@
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using GiLuFlixBack.Repository;
-using System.Threading.Tasks;
 using GiLuFlixBack.Models;
 using GiLuFlixBack.Data;
-using System.Linq;
-using System;
 
 namespace GiLuFlixBack.Controllers
 {
