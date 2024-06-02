@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using GiLuFlixBack.Repository;
 using System.Security.Claims;
 using GiLuFlixBack.Models;
+using Microsoft.AspNetCore.Authorization;
 
 
 
@@ -23,6 +24,12 @@ public class UserController : Controller
         return View();
     }
 
+    [HttpGet]
+    public async Task<IActionResult> UserPage(int id) {
+        User user = await _userRepository.GetUserById(id);
+        return View(user);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Login([FromForm] User user)
     {
@@ -34,11 +41,11 @@ public class UserController : Controller
         }
 
         User userFromDb = await _userRepository.SearchByEmail(user.Email);
-        
+
         if (userFromDb.Email == null)
         {
             return ViewBag("Usuário não encontrado!");
-        }   
+        }
 
         if (userFromDb.isPasswordCorrect(user.Password) == false)
         {
@@ -47,12 +54,12 @@ public class UserController : Controller
 
         string role = await _userRepository.GetUserRole(user.Email);
         Console.WriteLine("ROLE DO USUARIO ENCONTRADO " + role.ToString());
-        
+
         List<Claim> claims =
         [
             new Claim(ClaimTypes.NameIdentifier, userFromDb.Id.ToString()),
             new Claim(ClaimTypes.Name, userFromDb.Name),
-            new Claim(ClaimTypes.Role, role) 
+            new Claim(ClaimTypes.Role, role)
         ];
         var authScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
@@ -65,16 +72,17 @@ public class UserController : Controller
             {
                 IsPersistent = userFromDb.RememberMe
             });
-        return RedirectToAction("Index","Movies");
+        return RedirectToAction("Index", "Movies");
     }
 
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
-        return RedirectToAction("Login","User");
+        return RedirectToAction("Login", "User");
     }
 
     [HttpGet]
+    // [Authorize(Roles = "admin")]
     public async Task<IActionResult> Dashboard()
     {
         return View();
@@ -127,8 +135,9 @@ public class UserController : Controller
 
         Console.WriteLine("INFO recebida" + requesterId + loggedUserId);
         try
-        {   
-            _userRepository.acceptFriendship(requesterId,Convert.ToInt32(loggedUserId));
+        {
+            await _userRepository.acceptFriendship(requesterId, Convert.ToInt32(loggedUserId));
+            await _userRepository.deleteFriendshipRequest(requesterId, Convert.ToInt32(loggedUserId));
             ViewBag.SuccessMessage = "Requisição enviada!";
             return RedirectToAction("DetailsById","User", new { id = loggedUserId });
         }

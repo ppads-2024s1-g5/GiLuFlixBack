@@ -17,5 +17,6 @@ namespace GiLuFlixBack.Repository
 
         Task<int> acceptFriendship(int user1,int user2 );
 
+        Task<int> deleteFriendshipRequest(int user1, int user2);
     }
 }

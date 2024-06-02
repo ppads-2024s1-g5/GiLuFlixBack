@@ -32,11 +32,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="TvShow" asp-action="Index">Tv Shows</a>
                         </li>
-                        <li class="nav-item">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Dashboard">Dashboard</a>
                         </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Dashboard">Minha página</a>
+                            <a asp-action="UserPage" asp-controller="User"
+                                asp-route-id="@User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value"
+                                class="nav-link text-dark" asp-area="">Minha página</a>
                         </li>
                     </ul>
                     <button>

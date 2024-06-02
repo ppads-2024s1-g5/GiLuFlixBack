@@ -107,10 +107,19 @@ namespace GiLuFlixBack.Repository
         public async Task<int> acceptFriendship(int user1,int user2 )
         {
             int rowsAffected =  await _dbConnection.ExecuteAsync(
-                @"INSERT INTO catalog1.Friendships (UserId1, UserId2) VALUES (@user1, @user2);
-                  DELETE FROM catalog1.FriendshipRequests 
-                  WHERE (RequesterId = @user1 and RecipientId = @user2) OR (RequesterId = @user2 and RecipientId = @user1); "
+                @"INSERT INTO catalog1.Friendships (UserId1, UserId2) VALUES (@SolicitanteId, @DestinatarioId);"
+                , new { SolicitanteId = user1, DestinatarioId = user2 }
             );
+            Console.WriteLine("LINHAS AFETADAS" + rowsAffected);
+            return rowsAffected;
+        }
+
+        public async Task<int> deleteFriendshipRequest(int user1, int user2) {
+            int rowsAffected = await _dbConnection.ExecuteAsync(
+                @"DELETE FROM catalog1.FriendshipRequests
+                WHERE (RequesterId = @SolicitanteId and RecipientId = @DestinatarioId) OR (RequesterId = @DestinatarioId and RecipientId = @SolicitanteId);"
+                , new { SolicitanteId = user1, DestinatarioId = user2 }
+                );
             Console.WriteLine("LINHAS AFETADAS" + rowsAffected);
             return rowsAffected;
         }
