@@ -7,7 +7,6 @@ using GiLuFlixBack.Models;
 using Microsoft.AspNetCore.Authorization;
 
 
-
 namespace GiLuFlixBack.Controllers;
 public class UserController : Controller
 {
@@ -25,6 +24,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> UserPage(int id) {
         User user = await _userRepository.GetUserById(id);
         return View(user);

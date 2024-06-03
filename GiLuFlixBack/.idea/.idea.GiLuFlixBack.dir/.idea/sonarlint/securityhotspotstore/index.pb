@@ -224,8 +224,6 @@ M
 Controllers/UserController.cs,e/7/e7c859cb919da525fd3958aaaa443cf524278395
 O
 Controllers/ReviewController.cs,9/9/99a0082773c1fad7590f233dcfd6813bdbd9903f
-–
-f.dotnet/sdk/8.0.300/Sdks/Microsoft.NET.Sdk/analyzers/build/config/analysislevel_8_default.globalconfig,1/1/1175f767ad2008e5e6f96e5c95e71a2a08c9e757
 @
 appsettings.json,b/c/bc678f3600cdefd583b88522810b2a538d8ffd6a
 :
@@ -235,3 +233,9 @@ L
 appsettings.Development.json,4/4/44ff8956068a15e1ec00c171ebd93517be20a24d
 C
 GiLuFlixBack.csproj,f/1/f184b90d823e4ce76088afd72153d0e1569b5869
+J
+Views/User/UserPage.cshtml,9/d/9d0493cb9cf4c2e0eacda0753c2affc3db5f2c7d
+L
+Repository/BookRepository.cs,6/6/66131e730b78c6109c579038a850e3f10227aa88
+N
+Repository/TvShowRepository.cs,2/1/2181389112d0c1cdc8f55406c972d40844093a6e
