@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using GiLuFlixBack.Repository;
@@ -14,17 +15,24 @@ namespace GiLuFlixBack.Controllers
     {
         private readonly Context _context;
         private readonly ReviewRepository _reviewRepository;
+        private readonly MovieRepository _movieRepository;
 
-        public MoviesController(Context context, ReviewRepository reviewRepository)
+        public MoviesController(Context context, ReviewRepository reviewRepository, MovieRepository movieRepository)
         {
             _context = context;
+            _movieRepository = movieRepository;
             _reviewRepository = reviewRepository;
         }
 
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.movie.ToListAsync());
+            var movies = await _context.movie.ToListAsync();
+            
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var recommendations = await _movieRepository.GetRecommendations(Convert.ToInt32(userId));
+            ViewBag.Recommendations = recommendations;
+            return View(movies);
         }
 
         // GET: Movies/Details/5

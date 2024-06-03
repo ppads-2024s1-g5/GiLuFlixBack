@@ -4,7 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@if (ViewBag.Recommendations != null && ViewBag.Recommendations.Count > 0)
+{
+<h2>Recomendações:</h2>
+<ul>
+    @foreach (var recommendation in ViewBag.Recommendations)
+    {
+    <li>@recommendation.Title</li> <!-- Substitua Title pelo nome do campo que contém o título do filme -->
+    }
+</ul>
+}
 @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
 {
 <p>
@@ -43,7 +52,7 @@
                 @if (User.Identity.IsAuthenticated && User.IsInRole("admin"))
                 {
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                    <a asp-action = "Delete" asp - route - id = "@item.Id" > Delete </a>
+                    <a asp-action = "Delete" asp-route-id = "@item.Id" > Delete </a>
                 }
             </td>
         </tr>

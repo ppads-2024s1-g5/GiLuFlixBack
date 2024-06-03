@@ -20,19 +20,21 @@ namespace GiLuFlixBack.Repository
         {
             _dbConnection = new MySqlConnection(configuration.GetConnectionString("DefaultConnection"));
         }
-        public async Task<int> GetReviews(string UserId)
+        public async Task<ICollection<Movie>> GetRecommendations(int id)
         {
-            _dbConnection?.Open();
-
-            //var parameters = new { UserId = UserId, ItemId = review.ItemId, Rating = review.Rating, ReviewText = review.ReviewText };
-            var parameters = "";
-            string query = @"; ";
-
-            var rowsAffected = await _dbConnection.ExecuteAsync(query, parameters);
-            Console.WriteLine($"{rowsAffected} row(s) inserted.");
-            _dbConnection?.Close();
+            string query = @"WITH countries as (
+                SELECT 
+                country,
+                count(1)
+            FROM catalog1.Movie 
+                WHERE Id IN (SELECT DISTINCT ItemId FROM catalog1.Review WHERE UserId = @id)
+            GROUP BY 1
+                )
+            SELECT * FROM catalog1.Movie WHERE Country IN (SELECT Country from countries) LIMIT 5;";
             
-            return rowsAffected;        
+            IEnumerable<Movie> result = await _dbConnection.QueryAsync<Movie>(query, new { id = id });
+            ICollection<Movie> recommendationCollection = result.ToList();
+            return recommendationCollection;
         }
     }
 }

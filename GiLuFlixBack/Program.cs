@@ -16,6 +16,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ReviewRepository>();
+builder.Services.AddScoped<MovieRepository>();
+builder.Services.AddScoped<BookRepository>();
+builder.Services.AddScoped<TvShowRepository>();
 
 // Adding auth to api
 builder.Services

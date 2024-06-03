@@ -9,6 +9,7 @@ using GiLuFlixBack.Repository;
 using GiLuFlixBack.Data;
 using System.Linq;
 using System;
+using System.Security.Claims;
 
 namespace GiLuFlixBack.Controllers
 {
@@ -19,17 +20,24 @@ namespace GiLuFlixBack.Controllers
     {
         private readonly Context _context;
         private readonly ReviewRepository _reviewRepository;
+        private readonly BookRepository _bookRepository;
 
-        public BookController(Context context, ReviewRepository reviewRepository)
+        public BookController(Context context, ReviewRepository reviewRepository, BookRepository bookRepository)
         {
             _context = context;
             _reviewRepository = reviewRepository;
+            _bookRepository = bookRepository;
         }
 
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-            return View(await _context.book.ToListAsync());
+            var books = await _context.book.ToListAsync();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var recommendations = await _bookRepository.GetRecommendations(Convert.ToInt32(userId));
+            ViewBag.Recommendations = recommendations;
+            return View(books);
         }
 
         // GET: Movies/Details/5

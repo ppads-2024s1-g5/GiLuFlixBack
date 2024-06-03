@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +15,24 @@ namespace GiLuFlixBack.Controllers
     {
         private readonly Context _context;
         private readonly ReviewRepository _reviewRepository;
+        private readonly TvShowRepository _tvShowRepository;
 
-        public TvShowController(Context context, ReviewRepository reviewRepository)
+        public TvShowController(Context context, ReviewRepository reviewRepository, TvShowRepository tvShowRepository)
         {
             _context = context;
             _reviewRepository = reviewRepository;
+            _tvShowRepository = tvShowRepository;
         }
 
         // GET: tvShow
         public async Task<IActionResult> Index()
         {
-            return View(await _context.tvShow.ToListAsync());
+            var tvShows = await _context.tvShow.ToListAsync();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var recommendations = await _tvShowRepository.GetRecommendations(Convert.ToInt32(userId));
+            ViewBag.Recommendations = recommendations;
+            return View(tvShows);
         }
 
         // GET: tvShow/Details/5
